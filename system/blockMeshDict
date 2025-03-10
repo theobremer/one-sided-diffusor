@@ -52,7 +52,7 @@ nCellZJet 15;
 
 // Grading parameters
 GradXPreInlet 1.0;     // >1 to refine downstream
-GradXInlet 2.5;        // >1 to refine downstream
+GradXInlet 2.9;        // >1 to refine downstream
 GradXMainLeft 3.0;      
 GradXJet 1.0;           
 GradXMainRight 0.333;     
