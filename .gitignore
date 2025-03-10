@@ -1,0 +1,8 @@
+constant/polyMesh
+system/createPatchDict
+system/mirrorMeshDict
+system/probesDict
+
+log.*
+*.png
+*.foam
