@@ -3,14 +3,14 @@
 #!constant
 #!0
 
-constant/polyMesh
+test_cases/RANS_kOmega-SST_3D/constant/polyMesh
 
-system/createPatchDict
-system/mirrorMeshDict
-system/probesDict
+test_cases/RANS_kOmega-SST_3D/system/createPatchDict
+test_cases/RANS_kOmega-SST_3D/system/mirrorMeshDict
+test_cases/RANS_kOmega-SST_3D/system/probesDict
 
-0/epsilon
-0/nuTilda
+test_cases/RANS_kOmega-SST_3D/0/epsilon
+test_cases/RANS_kOmega-SST_3D/0/nuTilda
 
 log.*
 *.png
