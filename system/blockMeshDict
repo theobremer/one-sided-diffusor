@@ -14,7 +14,7 @@ FoamFile
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-scale   0.001;
+scale   0.001;                                        // all following lenghts are in mm
 
 // general variables 
 pi 3.1415926535;
@@ -52,14 +52,14 @@ nCellZJet 15;
 
 // Grading parameters
 GradXPreInlet 1.0;     // >1 to refine downstream
-GradXInlet 2.9;        // >1 to refine downstream
+GradXInlet 2.8;        // >1 to refine downstream
 GradXMainLeft 3.0;      
 GradXJet 1.0;           
 GradXMainRight 0.333;     
 GradXOutlet 0.4;       
 
 GradYLow 3.0;         // >1 to refine in direction of the wall  
-GradYHigh 2.0;
+GradYHigh (2.0 0.5);
 
 GradZBack 2.0;        // >1 to refine in direction of the jet
 GradZFront 0.5;       // <1 to refine in direction of the jet
@@ -163,15 +163,15 @@ vertices
     (#eval{-$PreInletX-$inletX} 0 #eval{-$jetWidth/2}) //74
     (#eval{-$PreInletX-$inletX} 0 -$width) //75
 
-    (#eval{-$PreInletX-$inletX} $hightMidPlane $width) //72
-    (#eval{-$PreInletX-$inletX} $hightMidPlane #eval{$jetWidth/2}) //73
-    (#eval{-$PreInletX-$inletX} $hightMidPlane #eval{-$jetWidth/2}) //74
-    (#eval{-$PreInletX-$inletX} $hightMidPlane -$width) //75
+    (#eval{-$PreInletX-$inletX} $hightMidPlane $width) //76
+    (#eval{-$PreInletX-$inletX} $hightMidPlane #eval{$jetWidth/2}) //77
+    (#eval{-$PreInletX-$inletX} $hightMidPlane #eval{-$jetWidth/2}) //78
+    (#eval{-$PreInletX-$inletX} $hightMidPlane -$width) //79
 
-    (#eval{-$PreInletX-$inletX} $hight $width) //72
-    (#eval{-$PreInletX-$inletX} $hight #eval{$jetWidth/2}) //73
-    (#eval{-$PreInletX-$inletX} $hight #eval{-$jetWidth/2}) //74
-    (#eval{-$PreInletX-$inletX} $hight -$width) //75
+    (#eval{-$PreInletX-$inletX} $hight $width) //80
+    (#eval{-$PreInletX-$inletX} $hight #eval{$jetWidth/2}) //81
+    (#eval{-$PreInletX-$inletX} $hight #eval{-$jetWidth/2}) //82
+    (#eval{-$PreInletX-$inletX} $hight -$width) //83
     
     );
 
@@ -187,7 +187,7 @@ blocks
     ($nCellZOutside $nCellXPreInlet $nCellYhigh)
     simpleGrading ($GradZFront $GradXPreInlet $GradYHigh)
 
-    hex (48 49 73 74 50 51 78 77)  // middle bottom
+    hex (48 49 74 73 50 51 78 77)  // middle bottom
     ($nCellZJet $nCellXPreInlet $nCellYlow)
     simpleGrading ($GradZJet $GradXPreInlet $GradYLow)
 
@@ -230,9 +230,9 @@ blocks
 
 
     // Main 
-    hex (19 54 4 39 31 56 22 43) // front left bottom // wird anders durchlaufen, da sonst zwei Punkte zusammenfallen (Ursache unbekannt)
-    ($nCellXMainLeft $nCellZOutside $nCellYlow)  // andere Reihenfolge als der Rest wegen s.o.    (x z y)           
-    simpleGrading ($GradXMainLeft $GradZBack $GradYLow)  // Grading für Back, da die Z-Koordinate gedreht ist
+    hex (39 19 54 4 43 31 56 22) // front left bottom // wird anders durchlaufen, da sonst zwei Punkte zusammenfallen (Ursache unbekannt)
+    ($nCellZOutside $nCellXMainLeft $nCellYlow)  // andere Reihenfolge als der Rest wegen s.o.    (x z y)           
+    simpleGrading ($GradZBack $GradXMainLeft $GradYLow)  // Grading für Back, da die Z-Koordinate gedreht ist
 
     hex (43 31 56 22 47 35 58 7)  // front left top 
     ($nCellZOutside $nCellXMainLeft $nCellYhigh)                 
@@ -379,12 +379,6 @@ boundary
         (0 48 73 72)
         (48 49 74 73)
         (49 1 75 74)
-        // front
-        (0 20 76 72)
-        (20 3 80 76)
-        // back
-        (1 21 79 75)
-        (21 2 83 79)
         );
 
     }
@@ -439,18 +433,24 @@ boundary
     }
     Jet
     {
-        type patch;
-        faces
+        type wall;   // just to try without the jet active
+        faces 
         (
             (16 17 18 19)
         );
     }
-    frontAndBack
+    front
     {
-        type empty;
+        type            cyclic;
+        neighbourPatch  back;
+        transform       translational;
+        separationVector (0 0 #eval{-2*$width*$scale});
         faces
         (
-            //front 
+            
+            (0 20 76 72)
+            (20 3 80 76)
+        
             (4 22 20 0)
             (22 7 3 20)
             
@@ -464,7 +464,20 @@ boundary
             (12 26 24 8)
             (26 15 11 24)
 
-            //back
+            
+        );
+    }
+
+    back
+    {
+        type            cyclic;
+        neighbourPatch  front;
+        transform       translational;
+        separationVector (0 0 #eval{2*$width*$scale});
+        faces
+        (
+            (1 21 79 75)
+            (21 2 83 79)
             (5 23 21 1)
             (23 6 2 21)
 

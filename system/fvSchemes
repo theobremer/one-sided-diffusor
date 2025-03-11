@@ -10,43 +10,54 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      controlDict;
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-application     pimpleFoam;
+ddtSchemes
+{
+    default         steadyState;
+}
 
-startFrom       latestTime;
+gradSchemes
+{
+    default         Gauss linear;
+}
 
-startTime       0;
+divSchemes
+{
+    default         none;
 
-stopAt          endTime;
+    div(phi,U)      bounded Gauss linearUpwind grad(U);
 
-endTime         0.3;
+    turbulence      bounded Gauss limitedLinear 1;
+    div(phi,k)      $turbulence;
+    div(phi,epsilon) $turbulence;
+    div(phi,omega)  $turbulence;
 
-deltaT          0.0001;
+    div(nonlinearStress) Gauss linear;
+    div((nuEff*dev2(T(grad(U))))) Gauss linear;
+}
 
-writeControl    adjustable;
+laplacianSchemes
+{
+    default         Gauss linear corrected;
+}
 
-writeInterval   0.01;
+interpolationSchemes
+{
+    default         linear;
+}
 
-purgeWrite      0;
+snGradSchemes
+{
+    default         corrected;
+}
 
-writeFormat     ascii;
-
-writePrecision  6;
-
-writeCompression off;
-
-timeFormat      general;
-
-timePrecision   6;
-
-runTimeModifiable yes;
-
-adjustTimeStep  yes;
-
-maxCo           5;
+wallDist
+{
+    method          meshWave;
+}
 
 
 // ************************************************************************* //

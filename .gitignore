@@ -1,13 +1,20 @@
-*
-!system
-!constant
-!0
+#*
+#!system
+#!constant
+#!0
 
 constant/polyMesh
+
 system/createPatchDict
 system/mirrorMeshDict
 system/probesDict
 
-# log.*
-#*.png
-#*.foam
+0/epsilon
+0/nuTilda
+
+log.*
+*.png
+*.foam
+*.obj
+
+All*
