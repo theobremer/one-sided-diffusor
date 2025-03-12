@@ -16,7 +16,7 @@ FoamFile
 
 scale   0.001;                                        // all following lenghts are in mm
 
-// general variables 
+// general geometry variables 
 pi 3.1415926535;
 angleDeg 20;                                          // angle of the ramp
 angle #eval{$angleDeg/180*$pi}; 
@@ -50,7 +50,7 @@ nCellYhigh 50;
 nCellZOutside 1;
 nCellZJet 15;
 
-// Grading parameters
+// mesh grading
 GradXPreInlet 1.0;     // >1 to refine downstream
 GradXInlet 2.8;        // >1 to refine downstream
 GradXMainLeft 3.0;      

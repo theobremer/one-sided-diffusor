@@ -47,8 +47,9 @@ solvers
 
 PIMPLE
 {
-    nNonOrthogonalCorrectors 0;
-    nCorrectors         2;
+    nCorrectors     2;
+    nNonOrthogonalCorrectors 1;  // from elbowUnsteady case 
+    nOuterCorrectors 1;
 }
 
 

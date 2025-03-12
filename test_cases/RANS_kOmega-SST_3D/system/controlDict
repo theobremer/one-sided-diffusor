@@ -48,5 +48,11 @@ adjustTimeStep  yes;
 
 maxCo           5;
 
+functions
+{
+    //#include "FOs/FOyPlus"
+    //#include "FOs/FOwallShearStress"
+}
+
 
 // ************************************************************************* //

@@ -16,7 +16,7 @@ FoamFile
 
 scale   0.001;                                        // all following lenghts are in mm
 
-// general variables 
+// general geometry variables
 pi 3.1415926535;
 angleDeg 20;                                          // angle of the ramp
 angle #eval{$angleDeg/180*$pi}; 
@@ -35,8 +35,8 @@ angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side
 angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};  
 
 // number of cells for each block  
-nCellXPreInlet 13;
-nCellXInlet 50;
+nCellXPreInlet 32; 
+nCellXInlet 90;
 nCellXMainLeft 45;
 nCellXJet 1;
 nCellXMainRight 160;
@@ -47,16 +47,16 @@ nCellYhigh 50;
 
 nCellZJet 2;
 
-// Grading parameters
+// mesh grading 
 GradXPreInlet 1.0;     // >1 to refine downstream
-GradXInlet 2.8;        // >1 to refine downstream
+GradXInlet 1.5;        // >1 to refine downstream //2.8
 GradXMainLeft 3.0;      
 GradXJet 1.0;           
 GradXMainRight 0.333;     
 GradXOutlet 0.4;       
 
 GradYLow 3.0;         // >1 to refine in direction of the wall  
-GradYHigh (2.0 0.5);
+GradYHigh (2.0 0.3);  //(2.0 0.5)
 
 vertices
 (
