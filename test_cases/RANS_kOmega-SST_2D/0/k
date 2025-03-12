@@ -16,14 +16,14 @@ FoamFile
 
 dimensions      [0 2 -2 0 0 0 0];
 
-internalField   uniform 0.375;
+internalField   uniform 12;   // 9e-5 = 1.125*(20)^2/5e6 // 12 = 3/2(I*U^2) // I = 0.02 // still not correct 
 
 boundaryField
 {
     inlet
     {
         type            fixedValue;
-        value           uniform 0.375;
+        value           $internalField;
     }
 
     outlet
@@ -34,25 +34,24 @@ boundaryField
     Jet 
     {
         type            kqRWallFunction;
-        value           uniform 0.375; 
+        value           $internalField; 
     }
 
     wallPreInlet
     {
-        type            kqRWallFunction;
-        value           uniform 0.375;       
+        type            zeroGradient;            
     }
 
     upperWall
     {
         type            kqRWallFunction;
-        value           uniform 0.375;
+        value           $internalField;
     }
 
     lowerWall
     {
         type            kqRWallFunction;
-        value           uniform 0.375;
+        value           $internalField;
     }
 
     frontAndBack

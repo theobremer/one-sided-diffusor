@@ -16,13 +16,15 @@ FoamFile
 
 dimensions      [0 0 -1 0 0 0 0];
 
-internalField   uniform 440.15;   
+internalField   uniform 8000;   // k^0.5/(Cmu^0.25*L) // L=0.3 // still not correct 
 
 boundaryField
 {
     inlet
     {
         type            fixedValue;
+        //type            turbulentMixingLengthFrequencyInlet;
+        //mixingLength    0.3;
         value           $internalField;
     }
 
@@ -39,8 +41,7 @@ boundaryField
 
     wallPreInlet
     {
-        type           omegaWallFunction;
-        value          $internalField;
+        type           zeroGradient;
     }
 
     upperWall
