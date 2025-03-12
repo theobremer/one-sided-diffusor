@@ -7,7 +7,8 @@ The current test case is the 2D RANS simulation with the kOmega-SST turbulence m
 ## current errors
  - currently throws the 2D case a floating point excpection for U inlet BC bigger then 10m/s  
 ## Still TODO 
+ - getting the 2D RANS case with the kOmega-SST turbulence model with the inactive jet to run properly
  - testing the 2D RANS case with the kOmega-SST turbulence model with the active jet
  - running the 3D RANS case with the kOmega-SST turbulence model with the inactive jet
- - running the 3D RANS case with the kOmega-SST turbulence model with the inactive jet
+ - running the 3D RANS case with the kOmega-SST turbulence model with the active jet
  - testing further turbulence models for 2D and 3D meshes 
