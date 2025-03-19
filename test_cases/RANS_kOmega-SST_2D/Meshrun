@@ -1,0 +1,59 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+
+#------------------------------------------------------------------------------
+
+# make a directory output 
+mkdir output
+cd output
+mkdir mesh
+
+# go to the output directory
+cd mesh
+# copy all system, constant and 0 of the steadySteady case to output
+cp -r ../../steadyState/system .
+cp -r ../../steadyState/constant .
+
+# dummy file for post-processing with paraview
+touch mesh2D.foam
+
+# specify refinement level
+# mesh 0
+#cp system/blockMeshDict.m0 system/blockMeshDict
+#sed -i "s/^deltaT.*/deltaT          2.0e-3;/" system/controlDict
+# mesh 1
+# cp system/blockMeshDict.m1 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          1.0e-3;/" system/controlDict
+# mesh 2
+# cp system/blockMeshDict.m2 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          5.0e-4;/" system/controlDict
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMesh
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMesh
+
+#------------------------------------------------------------------------------

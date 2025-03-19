@@ -27,7 +27,7 @@ PreInletX 100;                                        // lenght of the inlet wit
 outletX #eval{cos($angle)*$lenghtRamp+5*$lenghtRamp}; // lenght of outlet behind the ramp. 5x is a approximation which has to be testet
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
 jetHight 0.5;                                         // hight of the Jet opening
-width2D 1;
+width2D 0.5;
 hightMidPlane 125;                                    // hight of the plane in the middle of the mesh to help refining the lower part
 angleRedSkewness #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cell abovr the ramp
 angleRedSkew1 #eval{$angleRedSkewness/180*$pi};  
@@ -35,17 +35,17 @@ angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side
 angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};  
 
 // number of cells for each block  
-nCellXPreInlet 32; 
-nCellXInlet 90;
-nCellXMainLeft 45;
+nCellXPreInlet 60; 
+nCellXInlet 120;
+nCellXMainLeft 70;
 nCellXJet 1;
-nCellXMainRight 160;
-nCellXOutlet 400;
+nCellXMainRight 250;
+nCellXOutlet 600;
 
-nCellYlow 50;
-nCellYhigh 50;
+nCellYlow 150;
+nCellYhigh 230;
 
-nCellZJet 2;
+nCellZJet 1;
 
 // mesh grading 
 GradXPreInlet 1.0;     // >1 to refine downstream
@@ -56,7 +56,7 @@ GradXMainRight 0.333;
 GradXOutlet 0.4;       
 
 GradYLow 3.0;         // >1 to refine in direction of the wall  
-GradYHigh (2.0 0.3);  //(2.0 0.5)
+GradYHigh (2.0 0.2);  //(2.0 0.5)
 
 vertices
 (
@@ -230,7 +230,7 @@ boundary
     }
     Jet
     {
-        type wall;   // just to try without the jet active
+        type patch;   // just to try without the jet active
         faces 
         (
             (25 19 18 24)

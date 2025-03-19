@@ -1,7 +1,8 @@
-#*
-#!system
-#!constant
-#!0
+# keeping the working directory "output" untracked
+test_cases/RANS_kOmega-SST_2D/output
+test_cases/RANS_kOmega-SST_3D/output
+
+
 # untracked files in the RANS_kOmega-SST_3D case 
 test_cases/RANS_kOmega-SST_3D/constant/polyMesh
 
@@ -26,5 +27,3 @@ log.*
 *.png
 *.foam
 *.obj
-
-All*

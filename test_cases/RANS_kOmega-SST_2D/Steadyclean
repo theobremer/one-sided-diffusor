@@ -1,0 +1,12 @@
+#!/bin/sh
+cd "${0%/*}" || exit                            # Run from this directory
+. "${WM_PROJECT_DIR:?}"/bin/tools/LogFunctions  # Tutorial log-file functions
+#------------------------------------------------------------------------------
+# change to output folder 
+cd output
+# remove the ResultSteadyState folder 
+rm -r resultSteadyState
+
+echo resultSteadyState folder removed
+
+#------------------------------------------------------------------------------

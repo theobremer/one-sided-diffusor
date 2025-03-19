@@ -1,0 +1,145 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+# make a directory output 
+mkdir output
+cd output
+mkdir resultSteadyState 
+mkdir resultTransient
+
+# go to the output directory
+cd resultSteadyState
+# copy all system, constant and 0 of the steadySteady case to output
+cp -r ../../steadyState/system .
+cp -r ../../steadyState/constant .
+cp -r ../../steadyState/0 .
+
+# dummy file for post-processing with paraview
+touch results2DsteadyState.foam
+
+# specify refinement level
+# mesh 0
+#cp system/blockMeshDict.m0 system/blockMeshDict
+#sed -i "s/^deltaT.*/deltaT          2.0e-3;/" system/controlDict
+# mesh 1
+# cp system/blockMeshDict.m1 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          1.0e-3;/" system/controlDict
+# mesh 2
+# cp system/blockMeshDict.m2 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          5.0e-4;/" system/controlDict
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshSteadyState
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshSteadyState
+
+
+# set inlet velocity
+#cp -r 0.org 0
+#runApplication setExprBoundaryFields
+
+# parallel run simpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParSteadyState
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshSteadyState
+runParallel potentialFoam -writephi
+runParallel $(getApplication)
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParSteadyState
+
+# Plot monitor data created by function objects
+foamMonitor -i 10 -r 5 -l postProcessing/residuals/*/residuals.dat &
+
+# calculating last iteration
+LAST_TIME=$(ls -d [0-9]* | sort -n | tail -1)
+echo "last iteration for simpleFoam: $LAST_TIME"
+# cleaning up
+#find ./ -type f \( -name "phi" -o -name "phi_0" -o -name "U_0" -o -name "gradU" \) -exec rm {} \;
+
+# changing to the transient case
+cd ../resultTransient
+
+# change of the system directory to transient 
+cp -r ../../transient/system .
+cp -r ../../transient/constant .
+cp -r ../../transient/0 .
+
+# dummy file for post-processing with paraview
+touch results2Dtransient.foam
+
+# mesh creation for mesh with jet as patch
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshTransient
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshTransient
+
+# copying steadyState solution as an start
+cp -r ../resultSteadyState/$LAST_TIME/* 0
+rm 0/uniform/time
+
+sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
+#sed -i '/Jet/,/}/c\
+#Jet\
+#{\
+#    type            fixedValue;\
+#    value           uniform (20 0 0);\
+#}' 0/U
+
+sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 0.54;/}' 0/k
+
+sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 47.916;/}' 0/omega
+
+sed -i '/Jet/,/}/{s/type.*/type            calculated;/;s/value.*/value           uniform 0;/}' 0/nut
+
+# setting the startTime to the last Timestep of the simpleFoam solution
+#sed -i "s/^startTime\s*0;/startTime $LATEST_TIME;/g" system/controlDict
+
+mapFields ../resultSteadyState
+
+echo "BC changed to transient"
+
+# parallel run pimpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParTransient
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshTransient
+runParallel $(getApplication)
+#runParallel postProcess -func "writeCellCentres" -constant -time none
+#mv log.postProcess log.postProcess.writeCellCentres
+#runParallel postProcess -func "writeCellVolumes" -constant -time none
+#mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParTransient
+
+
+
+#------------------------------------------------------------------------------
