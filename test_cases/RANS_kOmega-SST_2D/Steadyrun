@@ -36,6 +36,14 @@ cp -r ../../steadyState/system .
 cp -r ../../steadyState/constant .
 cp -r ../../steadyState/0 .
 
+# choose which mesh to use by uncommenting/commenting the right mesh
+
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m1 system/blockMeshDict
+
 # dummy file for post-processing with paraview
 touch results2DsteadyState.foam
 
@@ -76,6 +84,8 @@ runApplication reconstructPar
 mv log.reconstructPar log.postProcess.reconstructParSteadyState
 
 # calculating last iteration
-LAST_TIME=$(ls -d [0-9]* | sort -n | tail -1)
+#LAST_TIME=$(ls -d [0-9]* | sort -n | tail -1)
+LAST_TIME=$(foamListTimes -case . -latestTime)
+
 echo "last iteration for simpleFoam: $LAST_TIME"
 #------------------------------------------------------------------------------

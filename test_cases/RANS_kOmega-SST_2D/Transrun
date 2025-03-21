@@ -27,14 +27,24 @@ cd "${0%/*}" || exit
 # In order to run the transient case run the steady state case before. An ResultSteadyState is needed to proceed. 
 
 # go to the output folder 
-cd outout 
+cd output 
 # create a ResultTransient folder
 mkdir resultTransient
+
+cd resultTransient
 
 # change of the system directory to transient 
 cp -r ../../transient/system .
 cp -r ../../transient/constant .
 cp -r ../../transient/0 .
+
+# choose which mesh to use by uncommenting/commenting the right mesh
+
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m1 system/blockMeshDict
 
 # dummy file for post-processing with paraview
 touch results2Dtransient.foam
@@ -44,6 +54,10 @@ runApplication blockMesh
 mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
+
+# fetching the last iteration of the steadyState case
+LAST_TIME=$(foamListTimes -case ../resultSteadyState -latestTime)
+echo "last iteration for simpleFoam: $LAST_TIME"
 
 # copying steadyState solution as an start
 cp -r ../resultSteadyState/$LAST_TIME/* 0

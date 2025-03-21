@@ -46,11 +46,11 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes;
 
-maxCo           5; // 5
+maxCo           1; 
 
 functions
 {
-   // #include "FOs/FOyPlus"
+   #include "FOs/FOyPlus"
    // #include "FOs/FOwallShearStress"
 }
 
