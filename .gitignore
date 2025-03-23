@@ -13,16 +13,6 @@ test_cases/RANS_kOmega-SST_3D/system/probesDict
 test_cases/RANS_kOmega-SST_3D/0/epsilon
 test_cases/RANS_kOmega-SST_3D/0/nuTilda
 
-# untracked files in the RANS_kOmega-SST_2D case
-test_cases/RANS_kOmega-SST_2D/constant/polyMesh
-
-test_cases/RANS_kOmega-SST_2D/system/createPatchDict
-test_cases/RANS_kOmega-SST_2D/system/mirrorMeshDict
-test_cases/RANS_kOmega-SST_2D/system/probesDict
-
-test_cases/RANS_kOmega-SST_2D/0/epsilon
-test_cases/RANS_kOmega-SST_2D/0/nuTilda
-
 log.*
 *.png
 *.foam

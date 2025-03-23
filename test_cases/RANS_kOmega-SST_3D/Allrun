@@ -34,7 +34,7 @@ cp -r ../steadyState/constant .
 cp -r ../steadyState/0 .
 
 # dummy file for post-processing with paraview
-touch results2D.foam
+touch results3D.foam
 
 # specify refinement level
 # mesh 0
