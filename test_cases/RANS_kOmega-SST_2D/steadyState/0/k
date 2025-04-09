@@ -35,8 +35,8 @@ boundaryField
 
     Jet 
     {
-        type            kqRWallFunction;
-        value           $internalField; 
+        type            kqRWallFunction; // fixedValue;
+        value           $internalField;  //uniform 0;
     }
 
     wallPreInlet
@@ -46,14 +46,14 @@ boundaryField
 
     upperWall
     {
-        type            kqRWallFunction;
-        value           $internalField;
+        type            kqRWallFunction; // fixedValue;
+        value           $internalField;  //uniform 0;
     }
 
     lowerWall
     {
-        type            kqRWallFunction;
-        value           $internalField;
+        type            kqRWallFunction; // fixedValue;
+        value           $internalField;  //uniform 0;
     }
 
     frontAndBack

@@ -63,12 +63,15 @@ echo "last iteration for simpleFoam: $LAST_TIME"
 cp -r ../resultSteadyState/$LAST_TIME/* 0
 rm 0/uniform/time
 
-sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
+mapFields ../resultSteadyState
+
+sed -i '/Jet/,/}/c\    Jet\n    {\n        type            fixedValue;\n        value           uniform (20 0 0);\n    }' 0/U
+#sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
 #sed -i '/Jet/,/}/c\
 #Jet\
 #{\
 #    type            fixedValue;\
-#    value           uniform (20 0 0);\
+#    value           uniform (19 1 0);\
 #}' 0/U
 
 sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 0.54;/}' 0/k
@@ -80,7 +83,6 @@ sed -i '/Jet/,/}/{s/type.*/type            calculated;/;s/value.*/value         
 # setting the startTime to the last Timestep of the simpleFoam solution
 #sed -i "s/^startTime\s*0;/startTime $LATEST_TIME;/g" system/controlDict
 
-mapFields ../resultSteadyState
 
 echo "BC changed to transient"
 

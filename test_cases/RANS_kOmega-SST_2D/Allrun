@@ -103,10 +103,10 @@ cp -r ../../transient/0 .
 
 # choose which mesh to use for the transient case by uncommenting/commenting the right mesh
 
-# mesh with upper plane following the form of the Ramp
+# mesh with upper plane following the shape of the Ramp
 #cp system/blockMeshDict.m0 system/blockMeshDict
 
-# mesh with upper plane following the form of the top wall 
+# mesh with upper plane following the shape of the top wall 
 cp system/blockMeshDict.m1 system/blockMeshDict
 
 # dummy file for post-processing with paraview

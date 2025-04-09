@@ -35,8 +35,8 @@ boundaryField
 
     Jet 
     {
-        type            nutkWallFunction;
-        value           $internalField; 
+        type            nutkWallFunction; // calculated; 
+        value           $internalField;   // uniform 0;
     }
 
     wallPreInlet
@@ -47,14 +47,14 @@ boundaryField
 
     upperWall
     {
-        type            nutkWallFunction;
-        value           $internalField;
+        type            nutkWallFunction; // calculated; 
+        value           $internalField;   // uniform 0;
     }
 
     lowerWall
     {
-        type            nutkWallFunction;
-        value           $internalField;
+        type            nutkWallFunction; // calculated; 
+        value           $internalField;   // uniform 0;
     }
 
     frontAndBack
