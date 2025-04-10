@@ -36,16 +36,16 @@ angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side
 angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};  
 
 // number of cells for each block  
-nCellXPreInlet 50; 
-nCellXInlet 200;
-nCellXMainLeft 90;
-nCellXJet 1;
-nCellXMainRight 325;
-nCellXOutlet 700;
+nCellXPreInlet 100; 
+nCellXInlet 400;
+nCellXMainLeft 180;
+nCellXJet 2;
+nCellXMainRight 650;
+nCellXOutlet 1400;
 
-nCellYlow 50; //400
-nCellYmiddle 75; //100
-nCellYhigh 50; //175
+nCellYlow 100; //400
+nCellYmiddle 150; //100
+nCellYhigh 100; //175
 
 nCellZ 1;
 
@@ -57,9 +57,9 @@ GradXJet 1.0;
 GradXMainRight 0.333;     
 GradXOutlet 0.5;       
 
-GradYLow 30.0;         // >1 to refine in direction of the wall  
+GradYLow 10.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 
-GradYHigh 0.0333;        //(2.0 0.5)
+GradYHigh 0.1;        //(2.0 0.5)
 
 vertices
 (

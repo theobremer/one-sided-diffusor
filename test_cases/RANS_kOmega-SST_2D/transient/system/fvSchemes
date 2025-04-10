@@ -28,7 +28,7 @@ divSchemes
 {
     default         none;
 
-    div(phi,U)      bounded Gauss linearUpwind grad(U);
+    div(phi,U)      bounded Gauss linearUpwind grad(U); // limitedLinear test
 
     turbulence      bounded Gauss limitedLinear 1;
     div(phi,k)      $turbulence;

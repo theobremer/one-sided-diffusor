@@ -47,7 +47,7 @@ nCellYlow 150;
 nCellYmiddle 50;
 nCellYhigh 230;
 
-nCellZJet 1;
+nCellZ 1;
 
 // mesh grading 
 GradXPreInlet 1.0;     // >1 to refine downstream
@@ -135,79 +135,79 @@ blocks
 (
     // pre inlet block // (z x y)
     hex (6 7 1 0 8 9 3 2)  // bottom
-    ($nCellZJet $nCellXPreInlet $nCellYlow)
+    ($nCellZ $nCellXPreInlet $nCellYlow)
     simpleGrading (1 $GradXPreInlet $GradYLow)
 
     hex (8 9 3 2 44 45 43 42)  // middle
-    ($nCellZJet $nCellXPreInlet $nCellYmiddle)
+    ($nCellZ $nCellXPreInlet $nCellYmiddle)
     simpleGrading (1 $GradXPreInlet $GradYMiddle)
 
     hex (44 45 43 42 10 11 5 4)  // top
-    ($nCellZJet $nCellXPreInlet $nCellYhigh)
+    ($nCellZ $nCellXPreInlet $nCellYhigh)
     simpleGrading (1 $GradXPreInlet $GradYHigh)
 
     // inlet Block 
     hex (12 13 7 6 14 15 9 8) // bottom
-    ($nCellZJet $nCellXInlet $nCellYlow)                 
+    ($nCellZ $nCellXInlet $nCellYlow)                 
     simpleGrading (1 $GradXInlet $GradYLow)
 
     hex (14 15 9 8 46 47 45 44) // middle
-    ($nCellZJet $nCellXInlet $nCellYmiddle)                 
+    ($nCellZ $nCellXInlet $nCellYmiddle)                 
     simpleGrading (1 $GradXInlet $GradYMiddle)
 
     hex (46 47 45 44 16 17 11 10) // top
-    ($nCellZJet $nCellXInlet $nCellYhigh)                 
+    ($nCellZ $nCellXInlet $nCellYhigh)                 
     simpleGrading (1 $GradXInlet $GradYHigh)
 
 
     // Main 
     hex (18 19 13 12 20 21 15 14) // left bottom 
-    ($nCellZJet $nCellXMainLeft $nCellYlow)                 
+    ($nCellZ $nCellXMainLeft $nCellYlow)                 
     simpleGrading (1 $GradXMainLeft $GradYLow)
 
     hex (20 21 15 14 48 49 47 46)  // left middle 
-    ($nCellZJet $nCellXMainLeft $nCellYmiddle)                 
+    ($nCellZ $nCellXMainLeft $nCellYmiddle)                 
     simpleGrading (1 $GradXMainLeft $GradYMiddle)
 
     hex (48 49 47 46 22 23 17 16)  // left top 
-    ($nCellZJet $nCellXMainLeft $nCellYhigh)                 
+    ($nCellZ $nCellXMainLeft $nCellYhigh)                 
     simpleGrading (1 $GradXMainLeft $GradYHigh)
 
     hex (24 25 19 18 26 27 21 20) // jet bottom 
-    ($nCellZJet $nCellXJet $nCellYlow)                 
+    ($nCellZ $nCellXJet $nCellYlow)                 
     simpleGrading (1 $GradXJet $GradYLow)
 
     hex (26 27 21 20 50 51 49 48) // jet middle
-    ($nCellZJet $nCellXJet $nCellYmiddle)                 
+    ($nCellZ $nCellXJet $nCellYmiddle)                 
     simpleGrading (1 $GradXJet $GradYMiddle)
 
     hex (50 51 49 48 28 29 23 22) // jet top
-    ($nCellZJet $nCellXJet $nCellYhigh)                 
+    ($nCellZ $nCellXJet $nCellYhigh)                 
     simpleGrading (1 $GradXJet $GradYHigh)
 
     hex (30 31 25 24 32 33 27 26) // right bottom 
-    ($nCellZJet $nCellXMainRight $nCellYlow)                 
+    ($nCellZ $nCellXMainRight $nCellYlow)                 
     simpleGrading (1 $GradXMainRight $GradYLow)
 
     hex (32 33 27 26 52 53 51 50)  // right middle 
-    ($nCellZJet $nCellXMainRight $nCellYmiddle)                 
+    ($nCellZ $nCellXMainRight $nCellYmiddle)                 
     simpleGrading (1 $GradXMainRight $GradYMiddle)
 
     hex (52 53 51 50 34 35 29 28)  // right top 
-    ($nCellZJet $nCellXMainRight $nCellYhigh)                 
+    ($nCellZ $nCellXMainRight $nCellYhigh)                 
     simpleGrading (1 $GradXMainRight $GradYHigh)
 
     // Outlet Block 
     hex (36 37 31 30 38 39 33 32)  // bottom 
-    ($nCellZJet $nCellXOutlet $nCellYlow)                 
+    ($nCellZ $nCellXOutlet $nCellYlow)                 
     simpleGrading (1 $GradXOutlet $GradYLow)
 
     hex (38 39 33 32 54 55 53 52)  // middle
-    ($nCellZJet $nCellXOutlet $nCellYmiddle)                 
+    ($nCellZ $nCellXOutlet $nCellYmiddle)                 
     simpleGrading (1 $GradXOutlet $GradYMiddle)
 
     hex (54 55 53 52 40 41 35 34)  // top
-    ($nCellZJet $nCellXOutlet $nCellYhigh)                 
+    ($nCellZ $nCellXOutlet $nCellYhigh)                 
     simpleGrading (1 $GradXOutlet $GradYHigh)
 );
 

@@ -44,6 +44,9 @@ cp -r ../../steadyState/0 .
 # mesh with upper plane following the form of the top wall 
 cp system/blockMeshDict.m1 system/blockMeshDict
 
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+
 # dummy file for post-processing with paraview
 touch results2DsteadyState.foam
 

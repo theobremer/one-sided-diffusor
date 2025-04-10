@@ -48,7 +48,7 @@ nCellYlow 50;
 nCellYhigh 50;
 
 nCellZOutside 1;
-nCellZJet 15;
+nCellZ 15;
 
 // mesh grading
 GradXPreInlet 1.0;     // >1 to refine downstream
@@ -188,11 +188,11 @@ blocks
     simpleGrading ($GradZFront $GradXPreInlet $GradYHigh)
 
     hex (48 49 74 73 50 51 78 77)  // middle bottom
-    ($nCellZJet $nCellXPreInlet $nCellYlow)
+    ($nCellZ $nCellXPreInlet $nCellYlow)
     simpleGrading ($GradZJet $GradXPreInlet $GradYLow)
 
     hex (50 51 78 77 52 53 82 81)  // middle top
-    ($nCellZJet $nCellXPreInlet $nCellYhigh)
+    ($nCellZ $nCellXPreInlet $nCellYhigh)
     simpleGrading ($GradZJet $GradXPreInlet $GradYHigh)
 
     hex (49 1 75 74 51 21 79 78)  // back bottom
@@ -213,11 +213,11 @@ blocks
     simpleGrading ($GradZFront $GradXInlet $GradYHigh)
 
     hex (54 55 49 48 56 57 51 50) // middle bottom
-    ($nCellZJet $nCellXInlet $nCellYlow)                 
+    ($nCellZ $nCellXInlet $nCellYlow)                 
     simpleGrading ($GradZJet $GradXInlet $GradYLow)
 
     hex (56 57 51 50 58 59 53 52) // middle top
-    ($nCellZJet $nCellXInlet $nCellYhigh)                 
+    ($nCellZ $nCellXInlet $nCellYhigh)                 
     simpleGrading ($GradZJet $GradXInlet $GradYHigh)
 
     hex (55 5 1 49 57 23 21 51) // back bottom 
@@ -239,11 +239,11 @@ blocks
     simpleGrading ($GradZFront $GradXMainLeft $GradYHigh)
 
     hex (19 18 55 54 31 30 57 56) // middle left bottom 
-    ($nCellZJet $nCellXMainLeft $nCellYlow)                 
+    ($nCellZ $nCellXMainLeft $nCellYlow)                 
     simpleGrading ($GradZJet $GradXMainLeft $GradYLow)
 
     hex (31 30 57 56 35 34 59 58)  // middle left top 
-    ($nCellZJet $nCellXMainLeft $nCellYhigh)                 
+    ($nCellZ $nCellXMainLeft $nCellYhigh)                 
     simpleGrading ($GradZJet $GradXMainLeft $GradYHigh)
 
     hex (18 38 5 55 30 42 23 57) // back left bottom 
@@ -263,11 +263,11 @@ blocks
     simpleGrading ($GradZFront $GradXJet $GradYHigh)
 
     hex (16 17 18 19 28 29 30 31) // jet bottom 
-    ($nCellZJet $nCellXJet $nCellYlow)                 
+    ($nCellZ $nCellXJet $nCellYlow)                 
     simpleGrading ($GradZJet $GradXJet $GradYLow)
 
     hex (28 29 30 31 32 33 34 35) // jet top
-    ($nCellZJet $nCellXJet $nCellYhigh)                 
+    ($nCellZ $nCellXJet $nCellYhigh)                 
     simpleGrading ($GradZJet $GradXJet $GradYHigh)
 
     hex (17 37 38 18 29 41 42 30) // back middle bottom  
@@ -287,11 +287,11 @@ blocks
     simpleGrading ($GradZFront $GradXMainRight $GradYHigh)
 
     hex (60 61 17 16 62 63 29 28) // middle right bottom 
-    ($nCellZJet $nCellXMainRight $nCellYlow)                 
+    ($nCellZ $nCellXMainRight $nCellYlow)                 
     simpleGrading ($GradZJet $GradXMainRight $GradYLow)
 
     hex (62 63 29 28 64 65 33 32)  // middle right top 
-    ($nCellZJet $nCellXMainRight $nCellYhigh)                 
+    ($nCellZ $nCellXMainRight $nCellYhigh)                 
     simpleGrading ($GradZJet $GradXMainRight $GradYHigh)
 
     hex (61 9 37 17 63 25 41 29)  // back right bottom  
@@ -312,11 +312,11 @@ blocks
     simpleGrading ($GradZFront $GradXOutlet $GradYHigh)
 
     hex (66 67 61 60 68 69 63 62)  // middle bottom 
-    ($nCellZJet $nCellXOutlet $nCellYlow)                 
+    ($nCellZ $nCellXOutlet $nCellYlow)                 
     simpleGrading ($GradZJet $GradXOutlet $GradYLow)
 
     hex (68 69 63 62 70 71 65 64)  // middle top
-    ($nCellZJet $nCellXOutlet $nCellYhigh)                 
+    ($nCellZ $nCellXOutlet $nCellYhigh)                 
     simpleGrading ($GradZJet $GradXOutlet $GradYHigh)
 
     hex (67 13 9 61 69 27 25 63)  // back bottom 

@@ -37,6 +37,7 @@ cp -r ../../steadyState/system .
 cp -r ../../steadyState/constant .
 cp -r ../../steadyState/0 .
 
+#------------------------------------------------------------------------------
 # choose which mesh to use for the steadyState case by uncommenting/commenting the right mesh
 
 # mesh with upper plane following the form of the Ramp
@@ -45,19 +46,14 @@ cp -r ../../steadyState/0 .
 # mesh with upper plane following the form of the top wall 
 cp system/blockMeshDict.m1 system/blockMeshDict
 
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+#------------------------------------------------------------------------------
+
 # dummy file for post-processing with paraview
 touch results2DsteadyState.foam
 
-# specify refinement level
-# mesh 0
-#cp system/blockMeshDict.m0 system/blockMeshDict
-#sed -i "s/^deltaT.*/deltaT          2.0e-3;/" system/controlDict
-# mesh 1
-# cp system/blockMeshDict.m1 system/blockMeshDict
-# sed -i "s/^deltaT.*/deltaT          1.0e-3;/" system/controlDict
-# mesh 2
-# cp system/blockMeshDict.m2 system/blockMeshDict
-# sed -i "s/^deltaT.*/deltaT          5.0e-4;/" system/controlDict
+
 
 # mesh creation
 runApplication blockMesh
@@ -99,15 +95,20 @@ cd ../resultTransient
 # change of the system directory to transient 
 cp -r ../../transient/system .
 cp -r ../../transient/constant .
-cp -r ../../transient/0 .
+#cp -r ../../transient/0 .
 
-# choose which mesh to use for the transient case by uncommenting/commenting the right mesh
+#------------------------------------------------------------------------------
+# choose which mesh to use for the steadyState case by uncommenting/commenting the right mesh
 
-# mesh with upper plane following the shape of the Ramp
+# mesh with upper plane following the form of the Ramp
 #cp system/blockMeshDict.m0 system/blockMeshDict
 
-# mesh with upper plane following the shape of the top wall 
+# mesh with upper plane following the form of the top wall 
 cp system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+#------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
 touch results2Dtransient.foam
@@ -118,16 +119,21 @@ mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
 
+
 # copying steadyState solution as an start
 cp -r ../resultSteadyState/$LAST_TIME/* 0
+echo "using $LAST_TIME as a startvalues"
 rm 0/uniform/time
 
-sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
+mapFields ../resultSteadyState
+
+sed -i '/Jet/,/}/c\    Jet\n    {\n        type            fixedValue;\n        value           uniform (20 0 0);\n    }' 0/U
+#sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
 #sed -i '/Jet/,/}/c\
 #Jet\
 #{\
 #    type            fixedValue;\
-#    value           uniform (20 0 0);\
+#    value           uniform (19 1 0);\
 #}' 0/U
 
 sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 0.54;/}' 0/k
@@ -139,7 +145,6 @@ sed -i '/Jet/,/}/{s/type.*/type            calculated;/;s/value.*/value         
 # setting the startTime to the last Timestep of the simpleFoam solution
 #sed -i "s/^startTime\s*0;/startTime $LATEST_TIME;/g" system/controlDict
 
-mapFields ../resultSteadyState
 
 echo "BC changed to transient"
 
