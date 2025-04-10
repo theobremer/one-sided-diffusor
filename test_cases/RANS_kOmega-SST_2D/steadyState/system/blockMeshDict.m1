@@ -275,7 +275,7 @@ boundary
     }
     Jet
     {
-        type patch;   
+        type wall;   
         faces 
         (
             (25 19 18 24)
