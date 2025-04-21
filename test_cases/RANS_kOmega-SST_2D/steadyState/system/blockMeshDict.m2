@@ -28,24 +28,24 @@ outletX #eval{cos($angle)*$lenghtRamp+5*$lenghtRamp}; // lenght of outlet behind
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
 jetHight 0.5;                                         // hight of the Jet opening
 width2D 0.1;
-hightMidPlane 25;                                    // hight of the plane in the middle of the mesh to help refining the lower part
-hightUpperPlane 375;                                 
+hightMidPlane 25; //125                                   // hight of the plane in the middle of the mesh to help refining the lower part
+hightUpperPlane 375; //350                                
 angleRedSkewness #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cell abovr the ramp
 angleRedSkew1 #eval{$angleRedSkewness/180*$pi};  
 angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side of the main block to reduce the skewness of the cell abovr the ramp
 angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};  
 
 // number of cells for each block  
-nCellXPreInlet 100; 
-nCellXInlet 400;
-nCellXMainLeft 180;
-nCellXJet 2;
-nCellXMainRight 650;
-nCellXOutlet 1400;
+nCellXPreInlet 50; 
+nCellXInlet 200;
+nCellXMainLeft 90;
+nCellXJet 1;
+nCellXMainRight 325;
+nCellXOutlet 700;
 
-nCellYlow 100; //400
-nCellYmiddle 150; //100
-nCellYhigh 100; //175
+nCellYlow 50;
+nCellYmiddle 75; 
+nCellYhigh 50;
 
 nCellZ 1;
 
@@ -57,9 +57,9 @@ GradXJet 1.0;
 GradXMainRight 0.333;     
 GradXOutlet 0.5;       
 
-GradYLow 10.0;         // >1 to refine in direction of the wall  
+GradYLow 30.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 
-GradYHigh 0.1;        //(2.0 0.5)
+GradYHigh 0.0333;        //(2.0 0.5)
 
 vertices
 (
@@ -275,7 +275,7 @@ boundary
     }
     Jet
     {
-        type patch;   
+        type wall;   // just to try without the jet active
         faces 
         (
             (25 19 18 24)

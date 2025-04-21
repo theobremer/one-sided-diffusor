@@ -27,40 +27,43 @@ cd "${0%/*}" || exit
 # make a folder output 
 mkdir output
 cd output
-mkdir resultSteadyState 
+mkdir MeshConvergence 
 
-# go to the output folder
-cd resultSteadyState
+cd MeshConvergence 
+
+mkdir mesh_1
+mkdir mesh_2
+mkdir mesh_3
+mkdir mesh_4
+mkdir mesh_5
+
+# calculation with mesh 1
+cd mesh_1
 # copy all system, constant and 0 of the steadySteady case to output
-cp -r ../../steadyState/system .
-cp -r ../../steadyState/constant .
-cp -r ../../steadyState/0 .
+cp -r ../../../steadyState/system .
+cp -r ../../../steadyState/constant .
+cp -r ../../../steadyState/0 .
 
-# choose which mesh to use by uncommenting/commenting the right mesh
+# choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
 #------------------------------------------------------------------------------
 # mesh with upper plane following the form of the Ramp
 #cp system/blockMeshDict.m0 system/blockMeshDict
 
 # mesh with upper plane following the form of the top wall 
-#cp system/blockMeshDict.m1 system/blockMeshDict
+cp system/blockMeshDict.m1 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
-cp system/blockMeshDict.m2 system/blockMeshDict
+#cp system/blockMeshDict.m2 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
-touch results2DsteadyState.foam
+touch mesh_1.foam
 
 # mesh creation
 runApplication blockMesh
 mv log.blockMesh log.postProcess.blockMeshSteadyState
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshSteadyState
-
-
-# set inlet velocity
-#cp -r 0.org 0
-#runApplication setExprBoundaryFields
 
 # parallel run simpleFoam
 runApplication decomposePar
@@ -76,9 +79,65 @@ mv log.postProcess log.postProcess.writeCellVolumes
 runApplication reconstructPar
 mv log.reconstructPar log.postProcess.reconstructParSteadyState
 
+
 # calculating last iteration
 #LAST_TIME=$(ls -d [0-9]* | sort -n | tail -1)
 LAST_TIME=$(foamListTimes -case . -latestTime)
 
-echo "last iteration for simpleFoam: $LAST_TIME"
+echo "last iteration for simpleFoam Mesh 1: $LAST_TIME"
+
+
+# calculation with mesh 2
 #------------------------------------------------------------------------------
+cd ../mesh_2
+# copy all system, constant and 0 of the steadySteady case to output
+cp -r ../../../steadyState/system .
+cp -r ../../../steadyState/constant .
+
+# choose which mesh to use for mesh_2 by uncommenting/commenting the right mesh
+#------------------------------------------------------------------------------
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m2 system/blockMeshDict
+#------------------------------------------------------------------------------
+
+# dummy file for post-processing with paraview
+touch mesh_2.foam
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshSteadyState
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshSteadyState
+
+# copying steadyState solution as an start
+cp -r ../mesh_1/$LAST_TIME/* 0
+echo "using $LAST_TIME as a startvalues for Mesh 2"
+rm 0/uniform/time 
+
+mapFields ../mesh_1 -consistent 
+
+# parallel run simpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParSteadyState
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshSteadyState
+runParallel potentialFoam -writephi
+runParallel $(getApplication)
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParSteadyState
+
+
+# calculating last iteration
+LAST_TIME=$(foamListTimes -case . -latestTime)
+
+echo "last iteration for simpleFoam Mesh 2: $LAST_TIME"

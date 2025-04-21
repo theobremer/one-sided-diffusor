@@ -39,13 +39,13 @@ angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};
 nCellXPreInlet 50; 
 nCellXInlet 200;
 nCellXMainLeft 90;
-nCellXJet 1;
+nCellXJet 1;  // mehr Zellen 
 nCellXMainRight 325;
 nCellXOutlet 700;
 
-nCellYlow 50; //400
-nCellYmiddle 75; //100
-nCellYhigh 50; //175
+nCellYlow 75; 
+nCellYmiddle 75; 
+nCellYhigh 75; 
 
 nCellZ 1;
 
@@ -57,9 +57,9 @@ GradXJet 1.0;
 GradXMainRight 0.333;     
 GradXOutlet 0.5;       
 
-GradYLow 30.0;         // >1 to refine in direction of the wall  
+GradYLow 50.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 
-GradYHigh 0.0333;        //(2.0 0.5)
+GradYHigh 0.02;        //(2.0 0.5)
 
 vertices
 (

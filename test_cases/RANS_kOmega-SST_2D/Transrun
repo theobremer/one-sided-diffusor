@@ -70,14 +70,7 @@ rm 0/uniform/time
 
 mapFields ../resultSteadyState
 
-sed -i '/Jet/,/}/c\    Jet\n    {\n        type            fixedValue;\n        value           uniform (20 0 0);\n    }' 0/U
-#sed -i '/Jet/,/}/ { s/^[ \t]*type[ \t].*;/    type            fixedValue;/; s/^[ \t]*value[ \t].*;/    value           uniform (20 0 0);/ }' 0/U
-#sed -i '/Jet/,/}/c\
-#Jet\
-#{\
-#    type            fixedValue;\
-#    value           uniform (19 1 0);\
-#}' 0/U
+sed -i '/Jet/,/}/c\    Jet\n    {\n        type            fixedValue;\n        value           uniform (19.696 3.473 0);\n    }' 0/U
 
 sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 0.54;/}' 0/k
 

@@ -32,7 +32,7 @@ writeInterval   100;
 
 purgeWrite      0;
 
-writeFormat     ascii;
+writeFormat     binary;
 
 writePrecision  6;
 
@@ -49,6 +49,22 @@ adjustTimeStep  yes;
 
 functions
 {
+    solverInfo
+    {
+        type        solverInfo;
+        libs ("libutilityFunctionObjects.so");
+
+        fields
+        (
+            U
+            p
+            k
+        );
+        writeResidualFields yes;
+
+        writeControl   timeStep;
+        writeInterval  100;
+    }
     yPlus
     {
         type            yPlus;
@@ -59,10 +75,78 @@ functions
         executeControl  writeTime;
         writeControl    writeTime;
     }
+
+   vorticity
+   {
+        type            vorticity;
+        libs            ("libfieldFunctionObjects.so");
+        executeControl  writeTime;
+        writeControl    writeTime;
+   }
+
    
-    // #include "FOs/FOyPlus"
-    // #include "FOs/FOwallShearStress"
+   wallShearStress
+   {
+    // Mandatory entries
+        type            wallShearStress;
+        libs            ("libfieldFunctionObjects.so");
+
+    // Optional entries
+        patches         (lowerWall);
+        writeFields     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+
+    // Optional (inherited) entries
+        writePrecision  10;
+        writeToFile     true;
+        useUserTime     true;
+
+        //region          lowerWall;
+        //enabled         true;
+        //log             true;
+        //timeStart       0;
+        //timeEnd         1000;
+        //executeControl  timeStep;
+        //executeInterval 1;
+        //writeControl    writeTime;
+        //writeInterval   -1;
+    }
+
+    samples
+    {
+        type            surfaces;
+        libs            (sampling);
+        log             true;
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        surfaceFormat   raw;
+        formatOptions
+        {
+            raw 
+            {
+                normal true;
+            }
+        }
+        fields          (wallShearStress);
+        surfaces
+        {
+            lowerWall
+            {
+                type patch;
+                patches (lowerWall);
+                interpolate false;
+                invariant true;
+            }
+        }
+    }
+
 }
+   
+
 
 
 // ************************************************************************* //
