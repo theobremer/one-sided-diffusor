@@ -38,14 +38,14 @@ angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};
 // number of cells for each block  
 nCellXPreInlet 50; 
 nCellXInlet 200;
-nCellXMainLeft 90;
-nCellXJet 1;
-nCellXMainRight 325;
+nCellXMainLeft 100;
+nCellXJet 2;
+nCellXMainRight 400;
 nCellXOutlet 700;
 
-nCellYlow 70;
-nCellYmiddle 75; 
-nCellYhigh 70;
+nCellYlow 75;
+nCellYmiddle 100; 
+nCellYhigh 75;
 
 nCellZ 1;
 
