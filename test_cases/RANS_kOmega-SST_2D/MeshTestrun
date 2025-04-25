@@ -193,7 +193,7 @@ cp system/blockMeshDict.m3 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
-touch mesh_2.foam
+touch mesh_3.foam
 
 # mesh creation
 runApplication blockMesh

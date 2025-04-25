@@ -59,6 +59,7 @@ functions
             U
             p
             k
+            omega
         );
         writeResidualFields yes;
 
