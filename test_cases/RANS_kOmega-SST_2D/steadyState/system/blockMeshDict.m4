@@ -38,7 +38,7 @@ angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};
 // number of cells for each block  
 nCellXPreInlet 50; 
 nCellXInlet 200;
-nCellXMainLeft 100;
+nCellXMainLeft 125;
 nCellXJet 2;
 nCellXMainRight 400;
 nCellXOutlet 700;
@@ -52,10 +52,10 @@ nCellZ 1;
 // mesh grading 
 GradXPreInlet 2.0;     // >1 to refine downstream
 GradXInlet 1.5;        // >1 to refine downstream //2.8
-GradXMainLeft 2.0;      
+GradXMainLeft 3;      
 GradXJet 1.0;           
-GradXMainRight 0.333;     
-GradXOutlet 0.5;       
+GradXMainRight 0.2;     
+GradXOutlet 0.3;       
 
 GradYLow 40.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 

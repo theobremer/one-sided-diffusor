@@ -36,17 +36,25 @@ cd mesh
 cp -r ../../steadyState/system .
 cp -r ../../steadyState/constant .
 
+# choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
 #------------------------------------------------------------------------------
-# choose which mesh to use by uncommenting/commenting the right mesh
-
 # mesh with upper plane following the form of the Ramp
 #cp system/blockMeshDict.m0 system/blockMeshDict
 
 # mesh with upper plane following the form of the top wall 
-cp system/blockMeshDict.m1 system/blockMeshDict
+#cp system/blockMeshDict.m1 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m2 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m3 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m4 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m5 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
