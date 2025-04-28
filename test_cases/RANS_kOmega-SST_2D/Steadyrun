@@ -54,7 +54,10 @@ cp -r ../../steadyState/0 .
 #cp system/blockMeshDict.m4 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
-cp system/blockMeshDict.m5 system/blockMeshDict
+#cp system/blockMeshDict.m5 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m6 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
