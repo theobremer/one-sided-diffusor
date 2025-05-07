@@ -115,7 +115,7 @@ functions
         //writeInterval   -1;
     }
 
-    samplesUpperWall
+    samples
     {
         type            surfaces;
         libs            (sampling);
@@ -140,6 +140,14 @@ functions
         );
         surfaces
         {
+            lowerWall
+            {
+                type patch;
+                patches (lowerWall);
+                interpolate false;
+                invariant true;
+            }
+
             upperWall
             {
                 type patch;
@@ -148,10 +156,7 @@ functions
                 invariant true;
             }
         }
-    }
-
-
-
+    }   
 }
    
 

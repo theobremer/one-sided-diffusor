@@ -20,6 +20,13 @@
 #
 #------------------------------------------------------------------------------
 
+#------------------------------------------------------------------------------
+# This script runs 6 different meshes one by one, using the previous result as
+# startvalues. It is possible to use different meshes for each step. To do so, 
+# uncomment the desired mesh in the box "choose which mesh..." for each mesh.
+#------------------------------------------------------------------------------
+
+
 cd "${0%/*}" || exit
 . "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
 #------------------------------------------------------------------------------
