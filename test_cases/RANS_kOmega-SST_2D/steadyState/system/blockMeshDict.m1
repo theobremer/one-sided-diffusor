@@ -43,9 +43,9 @@ nCellXJet 1;  // mehr Zellen
 nCellXMainRight 325;
 nCellXOutlet 700;
 
-nCellYlow 75; 
+nCellYlow 60; 
 nCellYmiddle 75; 
-nCellYhigh 75; 
+nCellYhigh 60; 
 
 nCellZ 1;
 
@@ -57,9 +57,9 @@ GradXJet 1.0;
 GradXMainRight 0.333;     
 GradXOutlet 0.5;       
 
-GradYLow 50.0;         // >1 to refine in direction of the wall  
+GradYLow 40.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 
-GradYHigh 0.02;        //(2.0 0.5)
+GradYHigh 0.025;        
 
 vertices
 (

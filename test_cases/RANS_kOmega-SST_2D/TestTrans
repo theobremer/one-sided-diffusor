@@ -1,0 +1,76 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+# In order to run the transient case run the steady state case before. An ResultSteadyState is needed to proceed. 
+
+# go to the output folder 
+cd output 
+# create a ResultTransient folder
+mkdir resultTransient
+
+cd resultTransient
+
+# change of the system directory to transient - 
+cp -r ../../transient/system .
+cp -r ../../steadyState/system/blockMeshDict.m3 system/blockMeshDict
+cp -r ../../transient/constant .
+mkdir 0
+cp -r ../MeshConvergence/mesh_3/6000/* 0
+
+# dummy file for post-processing with paraview
+touch results2Dtransient.foam
+
+# mesh creation for mesh with jet as patch
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshTransient
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshTransient
+
+# fetching the last iteration of the steadyState case
+#LAST_TIME=$(foamListTimes -case ../resultSteadyState -latestTime)
+#echo "last iteration for simpleFoam: $LAST_TIME"
+
+# copying steadyState solution as an start
+#cp -r ../resultSteadyState/$LAST_TIME/* 0
+rm 0/uniform/time
+
+
+# parallel run pimpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParTransient
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshTransient
+runParallel $(getApplication)
+#runParallel postProcess -func "writeCellCentres" -constant -time none
+#mv log.postProcess log.postProcess.writeCellCentres
+#runParallel postProcess -func "writeCellVolumes" -constant -time none
+#mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParTransient
+
+
+
+#------------------------------------------------------------------------------

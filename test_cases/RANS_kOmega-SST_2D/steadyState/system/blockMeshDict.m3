@@ -55,10 +55,11 @@ GradXInlet 1.5;        // >1 to refine downstream //2.8
 GradXMainLeft 2.0;      
 GradXJet 1.0;           
 GradXMainRight 0.333;     
-GradXOutlet 0.333;       
-GradYLow 30.0;         // >1 to refine in direction of the wall  
+GradXOutlet 0.333;   
+
+GradYLow 40.0;         // >1 to refine in direction of the wall  
 GradYMiddle (8.0 0.125); 
-GradYHigh 0.0333;        //(2.0 0.5)
+GradYHigh 0.025;        //(2.0 0.5)
 
 vertices
 (

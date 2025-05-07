@@ -115,7 +115,7 @@ functions
         //writeInterval   -1;
     }
 
-    samples
+    samplesUpperWall
     {
         type            surfaces;
         libs            (sampling);
@@ -132,18 +132,25 @@ functions
                 normal true;
             }
         }
-        fields          (wallShearStress);
+        fields          
+        (
+            wallShearStress
+            p
+            U
+        );
         surfaces
         {
-            lowerWall
+            upperWall
             {
                 type patch;
-                patches (lowerWall);
+                patches (upperWall);
                 interpolate false;
                 invariant true;
             }
         }
     }
+
+
 
 }
    
