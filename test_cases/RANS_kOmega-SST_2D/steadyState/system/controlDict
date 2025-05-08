@@ -93,7 +93,11 @@ functions
         libs            ("libfieldFunctionObjects.so");
 
     // Optional entries
-        patches         (lowerWall);
+        patches         
+        (
+            lowerWall
+            upperWall
+        );
         writeFields     true;
         log             true;
         executeControl  writeTime;
