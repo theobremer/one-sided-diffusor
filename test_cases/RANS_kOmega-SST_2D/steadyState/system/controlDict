@@ -119,6 +119,30 @@ functions
         //writeInterval   -1;
     }
 
+    delta_p
+    {
+        type        multiFieldValue;
+        libs        (fieldFunctionObjects);
+        operation   subtract;
+        functions
+        {
+            pInlet
+            {
+                type            surfaceFieldValue;
+                libs            (fieldFunctionObjects);
+                fields          (p);
+                operation       areaAverage;
+                regionType      patch;
+                name            inlet;
+                writeFields     false;
+            }
+        }
+        writeToFile     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+
     samples
     {
         type            surfaces;

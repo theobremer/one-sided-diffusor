@@ -28,17 +28,79 @@ cd "${0%/*}" || exit
 
 # go to the output folder 
 cd output 
-# create a ResultTransient folder
+# create a result folders
+mkdir resultSteadyState 
 mkdir resultTransient
 
-cd resultTransient
+# go to the output directory
+cd resultSteadyState
+# copy all system, constant and 0 of the steadySteady case to output
+cp -r ../../steadyState/system .
+cp -r ../../steadyState/constant .
+cp -r ../../steadyState/0 .
+
+# choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
+#------------------------------------------------------------------------------
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m3 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m4 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m5 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m6 system/blockMeshDict
+#------------------------------------------------------------------------------
+# dummy file for post-processing with paraview
+touch results2DsteadyState.foam
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshSteadyState
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshSteadyState
+
+
+# parallel run simpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParSteadyState
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshSteadyState
+runParallel potentialFoam -writephi
+runParallel $(getApplication)
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParSteadyState
+
+
+# fetching the last iteration of the steadyState case
+LAST_TIME=$(foamListTimes -case . -latestTime)
+echo "last iteration for simpleFoam: $LAST_TIME"
+
+
+# going to the transient case
+cd ../resultTransient
 
 # change of the system directory to transient - 
 cp -r ../../transient/system .
 cp -r ../../steadyState/system/blockMeshDict.m3 system/blockMeshDict
 cp -r ../../transient/constant .
 mkdir 0
-cp -r ../MeshConvergence/mesh_3/6000/* 0
+cp -r ../resultSteadyState/$LAST_TIME/* 0
 
 # dummy file for post-processing with paraview
 touch results2Dtransient.foam
@@ -49,12 +111,6 @@ mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
 
-# fetching the last iteration of the steadyState case
-#LAST_TIME=$(foamListTimes -case ../resultSteadyState -latestTime)
-#echo "last iteration for simpleFoam: $LAST_TIME"
-
-# copying steadyState solution as an start
-#cp -r ../resultSteadyState/$LAST_TIME/* 0
 rm 0/uniform/time
 
 
