@@ -30,7 +30,7 @@ cd "${0%/*}" || exit
 cd output 
 # create a result folders
 mkdir resultSteadyState 
-mkdir resultTransient2
+mkdir resultTransient5
 
 # go to the output directory
 cd resultSteadyState
@@ -93,7 +93,7 @@ echo "last iteration for simpleFoam: $LAST_TIME"
 
 
 # going to the transient case
-cd ../resultTransient2
+cd ../resultTransient5
 
 # change of the system directory to transient - 
 cp -r ../../transient/system .

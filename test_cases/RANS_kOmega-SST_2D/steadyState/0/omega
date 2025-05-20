@@ -16,7 +16,7 @@ FoamFile
 
 dimensions      [0 0 -1 0 0 0 0];
 
-internalField   uniform 47.916;   // 47.916 = k^0.5/(Cmu^0.25*L) // L=0.07*hight // still not correct 
+internalField   uniform 6.71;   // 6,71 = k^0.5/(Cmu^0.25*L) // L=height/6 // Cmu = 0.09
 
 boundaryField
 {
