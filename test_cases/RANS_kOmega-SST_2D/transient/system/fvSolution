@@ -20,7 +20,7 @@ solvers
     {
         solver           GAMG;
         tolerance        1e-7;
-        relTol           0.01;
+        relTol           0.001;
         smoother         DICGaussSeidel;
     }
 
@@ -57,7 +57,7 @@ PIMPLE
         "(U|p|omega|k)"
         {
             relTol          0;
-            tolerance       1e-06;
+            tolerance       1e-07;
         }
     }
 }
