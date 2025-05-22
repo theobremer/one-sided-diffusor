@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      probesDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+scale   0.001;
+
+pi 3.1415926535;
+angleDeg 20;
+angle #eval{$angleDeg/180*$pi}; 
+lenghtRamp 337;
+hight 400;
+inletX 200;
+outletX #eval{cos($angle)*$lenghtRamp+5*$lenghtRamp}; // erstmal als fünffache Lände der Rampe gesetzt soll getestet werden.
+jetLowEdge 270;
+jetWidth 20;
+jetHight 0.5;
+widthBetweenJets 2;
+width #eval{($jetWidth+$widthBetweenJets)/2};
+
+X_Schlange1 86;
+X_Schlange1 126;
+X_Schlange1 166;
+X_Schlange1 206;
+X_Schlange1 246;
+X_Schlange1 286;
+
+
+// Mandatory entries
+    type                probes;
+    libs                (sampling);
+    probeLocations      
+    (
+        (#eval{cos($angle)*X_Schlange1 sin($angle)*X_Schlange1 0})
+        (#eval{cos($angle)*X_Schlange2 sin($angle)*X_Schlange2 0})
+        (#eval{cos($angle)*X_Schlange3 sin($angle)*X_Schlange3 0})
+        (#eval{cos($angle)*X_Schlange4 sin($angle)*X_Schlange4 0})
+        (#eval{cos($angle)*X_Schlange5 sin($angle)*X_Schlange5 0})
+        (#eval{cos($angle)*X_Schlange6 sin($angle)*X_Schlange6 0})
+    );
+    fields              (p U);  // mal schauen wie mit WSS
+
+    // Optional entries
+    //fixedLocations      <bool>;
+    //includeOutOfBounds  <bool>;
+    //verbose             <bool>;
+    //sampleOnExecute     <bool>;
+    //interpolationScheme <scheme-type>;
+
+    // Inherited entries
+
+
+// ************************************************************************* //

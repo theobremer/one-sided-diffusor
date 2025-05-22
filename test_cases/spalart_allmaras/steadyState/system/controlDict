@@ -1,0 +1,193 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     simpleFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         10000;
+
+deltaT          1; 
+
+writeControl    adjustable;
+
+writeInterval   100;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  6;
+
+writeCompression off;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+adjustTimeStep  yes;
+
+
+functions
+{
+    solverInfo
+    {
+        type        solverInfo;
+        libs ("libutilityFunctionObjects.so");
+
+        fields
+        (
+            U
+            p
+            k
+            omega
+        );
+        writeResidualFields yes;
+
+        writeControl   timeStep;
+        writeInterval  100;
+    }
+    yPlus
+    {
+        type            yPlus;
+        libs            (fieldFunctionObjects);
+        patches         (lowerWall);
+        writeFields     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+
+   vorticity
+   {
+        type            vorticity;
+        libs            ("libfieldFunctionObjects.so");
+        executeControl  writeTime;
+        writeControl    writeTime;
+   }
+
+   
+   wallShearStress
+   {
+    // Mandatory entries
+        type            wallShearStress;
+        libs            ("libfieldFunctionObjects.so");
+
+    // Optional entries
+        patches         
+        (
+            lowerWall
+            upperWall
+        );
+        writeFields     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+
+    // Optional (inherited) entries
+        writePrecision  10;
+        writeToFile     true;
+        useUserTime     true;
+
+        //region          lowerWall;
+        //enabled         true;
+        //log             true;
+        //timeStart       0;
+        //timeEnd         1000;
+        //executeControl  timeStep;
+        //executeInterval 1;
+        //writeControl    writeTime;
+        //writeInterval   -1;
+    }
+
+    delta_p
+    {
+        type        multiFieldValue;
+        libs        (fieldFunctionObjects);
+        operation   subtract;
+        functions
+        {
+            pInlet
+            {
+                type            surfaceFieldValue;
+                libs            (fieldFunctionObjects);
+                fields          (p);
+                operation       areaAverage;
+                regionType      patch;
+                name            inlet;
+                writeFields     false;
+            }
+        }
+        writeToFile     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+
+    samples
+    {
+        type            surfaces;
+        libs            (sampling);
+        log             true;
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        surfaceFormat   raw;
+        formatOptions
+        {
+            raw 
+            {
+                normal true;
+            }
+        }
+        fields          
+        (
+            wallShearStress
+            p
+            U
+        );
+        surfaces
+        {
+            lowerWall
+            {
+                type patch;
+                patches (lowerWall);
+                interpolate false;
+                invariant true;
+            }
+
+            upperWall
+            {
+                type patch;
+                patches (upperWall);
+                interpolate false;
+                invariant true;
+            }
+        }
+    }   
+}
+   
+
+
+
+// ************************************************************************* //

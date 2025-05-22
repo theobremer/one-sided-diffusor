@@ -1,0 +1,102 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+# In order to run the transient case run the steady state case before. An ResultSteadyState is needed to proceed. 
+
+# go to the run folder 
+cd run 
+# create a ResultTransient folder
+mkdir resultTransient
+
+cd resultTransient
+
+# change of the system directory to transient 
+cp -r ../../transient/system .
+cp -r ../../transient/constant .
+cp -r ../../transient/0 .
+
+#------------------------------------------------------------------------------
+# choose which mesh to use by uncommenting/commenting the right mesh
+
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+#------------------------------------------------------------------------------
+
+# dummy file for post-processing with paraview
+touch results2Dtransient.foam
+
+# mesh creation for mesh with jet as patch
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshTransient
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshTransient
+
+# fetching the last iteration of the steadyState case
+LAST_TIME=$(foamListTimes -case ../resultSteadyState -latestTime)
+echo "last iteration for simpleFoam: $LAST_TIME"
+
+# copying steadyState solution as an start
+cp -r ../resultSteadyState/$LAST_TIME/* 0
+rm 0/uniform/time
+
+mapFields ../resultSteadyState
+
+sed -i '/Jet/,/}/c\    Jet\n    {\n        type            fixedValue;\n        value           uniform (19.696 3.473 0);\n    }' 0/U
+
+sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 0.54;/}' 0/k
+
+sed -i '/Jet/,/}/{s/type.*/type            fixedValue;/;s/value.*/value           uniform 47.916;/}' 0/omega
+
+sed -i '/Jet/,/}/{s/type.*/type            calculated;/;s/value.*/value           uniform 0;/}' 0/nut
+
+# setting the startTime to the last Timestep of the simpleFoam solution
+#sed -i "s/^startTime\s*0;/startTime $LATEST_TIME;/g" system/controlDict
+
+
+echo "BC changed to transient"
+
+# parallel run pimpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParTransient
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshTransient
+runParallel $(getApplication)
+#runParallel postProcess -func "writeCellCentres" -constant -time none
+#mv log.postProcess log.postProcess.writeCellCentres
+#runParallel postProcess -func "writeCellVolumes" -constant -time none
+#mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParTransient
+
+
+
+#------------------------------------------------------------------------------

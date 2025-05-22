@@ -1,0 +1,79 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+#!/bin/bash
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+# folder names for the steady state and transient results
+steady="resultSteadyState2"
+trans="resultTransient11"
+
+# make a directory run 
+mkdir run
+mkdir $steady
+mkdir $trans
+# go to the run directory
+cd run
+cd $steady
+# copy all system, constant and 0 of the steadySteady case to run
+cp -r ../../steadyState/system .
+cp -r ../../steadyState/constant .
+cp -r ../../steadyState/0 .
+
+# dummy file for post-processing with paraview
+touch $steady.foam
+
+# specify refinement level
+# mesh 0
+#cp system/blockMeshDict.m0 system/blockMeshDict
+#sed -i "s/^deltaT.*/deltaT          2.0e-3;/" system/controlDict
+# mesh 1
+# cp system/blockMeshDict.m1 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          1.0e-3;/" system/controlDict
+# mesh 2
+# cp system/blockMeshDict.m2 system/blockMeshDict
+# sed -i "s/^deltaT.*/deltaT          5.0e-4;/" system/controlDict
+
+# mesh creation
+runApplication blockMesh
+runApplication checkMesh -allGeometry -allTopology
+
+# set inlet velocity
+#cp -r 0.org 0
+#runApplication setExprBoundaryFields
+
+# parallel run
+#runApplication decomposePar
+#runParallel renumberMesh -overwrite
+#runParallel potentialFoam -writephi
+#runParallel $(getApplication)
+#runParallel postProcess -func "writeCellCentres" -constant -time none
+#mv log.postProcess log.postProcess.writeCellCentres
+#runParallel postProcess -func "writeCellVolumes" -constant -time none
+#mv log.postProcess log.postProcess.writeCellVolumes
+
+# cleaning up
+#find ./ -type f \( -name "phi" -o -name "phi_0" -o -name "U_0" -o -name "gradU" \) -exec rm {} \;
+
+
+#------------------------------------------------------------------------------

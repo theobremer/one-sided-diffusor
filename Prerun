@@ -1,0 +1,50 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+
+# folder name of the case to simulate 
+case="kOmega-SST_2D"
+
+# folder name which gets created in the run directory of the choosen test case
+folder="transient_relTol_P_0.001_relaxtion_p_0.4_mesh3.1_backward"
+
+# going in the test case folder 
+cd test_cases/$case
+
+# make a directory run 
+mkdir run
+cd run
+mkdir $folder
+cd $folder
+
+# copy all system, constant and 0 of the steadySteady case to run
+cp -r ../../steadyState .
+cp -r ../../transient .
+cp -r ../../Allrun .
+cp -r ../../Meshrun .
+cp -r ../../Steadyrun .
+cp -r ../../MultiSteadyrun .
+cp -r ../../Transrun .
+cp -r ../../TransJetrun .

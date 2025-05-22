@@ -1,0 +1,124 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+case=$(basename "$PWD")
+
+# go to the steadyState directory
+cd steadyState
+
+# copy all system, constant and 0 of the steadySteady case to run
+cp -r 0.org 0
+
+# choose which mesh to use for steady state case by uncommenting/commenting the right mesh
+#------------------------------------------------------------------------------
+# mesh with upper plane following the form of the Ramp
+#cp system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m2 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m3 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.m3.1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m4 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m5 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp system/blockMeshDict.m6 system/blockMeshDict
+#------------------------------------------------------------------------------
+# dummy file for post-processing with paraview
+touch "$case""_steadyState".foam
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshSteadyState
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshSteadyState
+
+
+# parallel run simpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParSteadyState
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshSteadyState
+runParallel potentialFoam -writephi
+runParallel $(getApplication)
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParSteadyState
+
+
+# fetching the last iteration of the steadyState case
+LAST_TIME=$(foamListTimes -case . -latestTime)
+echo "last iteration for simpleFoam: $LAST_TIME"
+
+
+# going to the transient case
+cd ../transient
+
+# change of the system directory to transient - 
+mkdir 0
+cp -r ../steadyState/$LAST_TIME/* 0
+
+# dummy file for post-processing with paraview
+touch "$case""_transient".foam
+
+# mesh creation for mesh with jet as patch
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshTransient
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshTransient
+
+rm 0/uniform/time
+
+
+# parallel run pimpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParTransient
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshTransient
+runParallel $(getApplication)
+#runParallel postProcess -func "writeCellCentres" -constant -time none
+#mv log.postProcess log.postProcess.writeCellCentres
+#runParallel postProcess -func "writeCellVolumes" -constant -time none
+#mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParTransient
+
+
+
+#------------------------------------------------------------------------------
