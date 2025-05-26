@@ -24,7 +24,7 @@ solvers
         smoother        GaussSeidel;
     }
 
-    "(U|k|epsilon|omega|f|v2)"
+    "(U|k|epsilon|omega|f|v2|nut|nuTilda)"
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
@@ -55,7 +55,7 @@ SIMPLE
     {
         p               1e-5;
         U               1e-5;
-        "(k|epsilon|omega|f|v2)" 1e-5;
+        "(k|epsilon|omega|f|v2|nut|nuTilda)" 1e-5;
     }
 }
 

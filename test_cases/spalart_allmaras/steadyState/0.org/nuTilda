@@ -41,7 +41,7 @@ boundaryField
 
     wallPreInlet
     {
-        type            fixedVAlue;
+        type            fixedValue;
         value           uniform 0;
     }
 

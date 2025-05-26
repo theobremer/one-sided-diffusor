@@ -43,7 +43,7 @@ divSchemes
 laplacianSchemes
 {
     default         Gauss linear corrected;
-    laplacian((nu + nuTilda), nuTilda)  Gauss linear corrected;
+    //laplacian((nu + nuTilda), nuTilda)  Gauss linear corrected;
 }
 
 interpolationSchemes

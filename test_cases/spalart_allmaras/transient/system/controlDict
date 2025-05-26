@@ -150,11 +150,13 @@ functions
         }
         writeToFile     true;
         log             true;
-        executeControl       timeStep;    
-        executeInterval      1;
+        // executeControl       timeStep;    
+        // executeInterval      1;
 
-        writeControl         timeStep;
-        writeInterval        1;
+        // writeControl         timeStep;
+        // writeInterval        1;
+        executeControl       writeTime;
+        writeControl         writeTime;
     }
 
 samples

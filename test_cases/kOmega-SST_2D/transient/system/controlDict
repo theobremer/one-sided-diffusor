@@ -46,7 +46,7 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes;
 
-maxCo           0.95; 
+maxCo           0.99; 
 
 
 
@@ -150,11 +150,11 @@ functions
         }
         writeToFile     true;
         log             true;
-        executeControl       timeStep;    
-        executeInterval      1;
+        //executeControl       timeStep;    
+        //executeInterval      1;
+        executeControl       writeTime;   
 
-        writeControl         timeStep;
-        writeInterval        1;
+        writeControl         writeTime;
     }
 
 samples

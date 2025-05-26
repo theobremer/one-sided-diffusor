@@ -91,8 +91,11 @@ echo "last iteration for simpleFoam: $LAST_TIME"
 cd ../transient
 
 # change of the system directory to transient - 
+cp ../steadyState/system/blockMeshDict system
 mkdir 0
 cp -r ../steadyState/$LAST_TIME/* 0
+
+rm 0/uniform/time
 
 # dummy file for post-processing with paraview
 touch "$case""_transient".foam
@@ -103,7 +106,7 @@ mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
 
-rm 0/uniform/time
+
 
 
 # parallel run pimpleFoam

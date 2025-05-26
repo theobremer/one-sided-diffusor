@@ -26,17 +26,9 @@ cd "${0%/*}" || exit
 #------------------------------------------------------------------------------
 
 # folder name for the mesh 
-mesh="Mesh3.1"
-# make a directory run 
-mkdir run
-cd run
-mkdir $mesh
+mesh="Mesh3.1_v2"
 
-# go to the run directory
-cd $mesh
-# copy all system, constant and 0 of the steadySteady case to run
-cp -r ../../steadyState/system .
-cp -r ../../steadyState/constant .
+cd steadyState
 
 # choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
 #------------------------------------------------------------------------------
@@ -53,7 +45,10 @@ cp -r ../../steadyState/constant .
 #cp system/blockMeshDict.m3 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
-cp system/blockMeshDict.m3.1 system/blockMeshDict
+#cp system/blockMeshDict.m3.1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+cp system/blockMeshDict.v2 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m4 system/blockMeshDict

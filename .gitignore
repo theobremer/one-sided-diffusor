@@ -1,6 +1,7 @@
 # keeping the working directory "run" untracked
 test_cases/kOmega-SST_2D/run
 test_cases/kOmega-SST_3D/run
+test_cases/spalart_allmaras/run
 
 
 # untracked files in the RANS_kOmega-SST_3D case 
@@ -9,3 +10,10 @@ log.*
 *.foam
 *.obj
 *.ipynb_checkpoints
+
+test_cases/kOmega-SST_2D/steadyState/system/snappyHexMeshDict
+test_cases/kOmega-SST_2D/steadyState/system/blockMeshDict.snappy
+test_cases/kOmega-SST_2D/steadyState/system/meshQualityDict
+test_cases/kOmega-SST_2D/steadyState/system/surfaceFeatureExtractDict
+test_cases/kOmega-SST_2D/steadyState/constant/triSurface
+

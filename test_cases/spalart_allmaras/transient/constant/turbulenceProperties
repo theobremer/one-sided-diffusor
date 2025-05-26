@@ -18,18 +18,9 @@ simulationType      RAS;
 
 RAS
 {
-    RASModel        SpalartAllmarasIDDES;
-    printCoeffs     no;
+    RASModel        SpalartAllmaras;
     turbulence      yes;
-    delta           IDDESDelta;
-
-    IDDESDeltaCoeffs
-    {
-        hmax           maxDeltaxyzCubeRoot;
-        maxDeltaxyzCubeRootCoeffs
-        {
-        }
-    }
+    
 }
 
 

@@ -28,7 +28,7 @@ cd "${0%/*}" || exit
 case="kOmega-SST_2D"
 
 # folder name which gets created in the run directory of the choosen test case
-folder="transient_relTol_P_0.001_relaxtion_p_0.4_mesh3.1_backward"
+folder="mesh_v2"
 
 # going in the test case folder 
 cd test_cases/$case
