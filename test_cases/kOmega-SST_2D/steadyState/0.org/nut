@@ -41,7 +41,7 @@ boundaryField
 
     wallPreInlet
     {
-        type            calculated; // calculated
+        type            calculated; // nutUSpaldingWallFunction
         value           $internalField;
     }
 

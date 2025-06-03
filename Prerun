@@ -28,7 +28,7 @@ cd "${0%/*}" || exit
 case="kOmega-SST_2D"
 
 # folder name which gets created in the run directory of the choosen test case
-folder="mesh_v2"
+folder="mesh_v3_3_transient"
 
 # going in the test case folder 
 cd test_cases/$case
@@ -48,3 +48,5 @@ cp -r ../../Steadyrun .
 cp -r ../../MultiSteadyrun .
 cp -r ../../Transrun .
 cp -r ../../TransJetrun .
+
+echo "created folder $folder in $case"

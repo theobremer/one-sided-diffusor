@@ -29,23 +29,26 @@ jetLowEdge 270;                                       // distance between the lo
 jetheigth 0.5;                                         // heigth of the Jet opening
 width2D 0.1;
 heigthMidPlane 25; //125                                   // heigth of the plane in the middle of the mesh to help refining the lower part
-heigthUpperPlane 375; //350                                
-angleRedSkewness #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cell abovr the ramp
-angleRedSkew1 #eval{$angleRedSkewness/180*$pi};  
-angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side of the main block to reduce the skewness of the cell abovr the ramp
+heigthUpperPlane 375; //350
+
+angleRedSkewness0 #eval{$angleDeg/2};                  // angle of the plain above the edge. Different angle for the rounded to reduce the cell gradient // may lead to higher non-orthogonality
+angleRedSkew0 #eval{$angleRedSkewness0/180*$pi}; 
+angleRedSkewness1 #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cell above the ramp
+angleRedSkew1 #eval{$angleRedSkewness1/180*$pi};  
+angleRedSkewness2 #eval{$angleDeg/2};;                // angle of the right side of the main block to reduce the skewness of the cell above the ramp
 angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};  
 
-x1 -10;
-x2 10;
+x1 -6;
+x2 6;
 y2 #eval{-$x2*tan($angle)};
 
 xCent 0;
-yCent -1;
+yCent -0.5;
 
 // number of cells for each block  
 nCellXPreInlet 40; 
-nCellXInlet 200;
-nCellXTrans 100;
+nCellXInlet 150;
+nCellXTrans 50;
 nCellXMainLeft 130;
 nCellXJet 1;
 nCellXMainRight 325;
@@ -53,13 +56,13 @@ nCellXOutlet 700;
 
 nCellYlow 75;
 nCellYmiddle 75; 
-nCellYhigh 75cd ..;
+nCellYhigh 75;
 
 nCellZ 1;
 
 // mesh grading 
 GradXPreInlet 1;     // >1 to refine downstream
-GradXInlet 4;        // >1 to refine downstream //2.8
+GradXInlet 5;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           
@@ -88,10 +91,10 @@ vertices
     
     ($x2 $y2 $width2D)  // 12
     ($x2 $y2 -$width2D)  // 13
-    (#eval{tan($angleRedSkew1)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} $width2D)  // 14
-    (#eval{tan($angleRedSkew1)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} -$width2D)  // 15
-    (#eval{tan($angleRedSkew1)*$heigth+$x2} #eval{$heigth} $width2D)  // 16
-    (#eval{tan($angleRedSkew1)*$heigth+$x2} #eval{$heigth} -$width2D)  // 17
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} $width2D)  // 14
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} -$width2D)  // 15
+    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} $width2D)  // 16
+    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} -$width2D)  // 17
 
     (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $width2D) // 18
     (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} -$width2D) // 19
@@ -125,8 +128,8 @@ vertices
     (#eval{-$PreInletX-$inletX} $heigthUpperPlane -$width2D) // 43
     (-$inletX $heigthUpperPlane $width2D)  // 44
     (-$inletX $heigthUpperPlane -$width2D)  // 45
-    (#eval{tan($angleRedSkew1)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} $width2D)  // 46
-    (#eval{tan($angleRedSkew1)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} -$width2D)  // 47
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} $width2D)  // 46
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} -$width2D)  // 47
     (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane $width2D) // 48
     (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane -$width2D) // 49
     (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))} $heigthUpperPlane $width2D) // 50

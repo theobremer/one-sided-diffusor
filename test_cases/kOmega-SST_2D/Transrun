@@ -31,7 +31,7 @@ cd steadyState
 # copy all system, constant and 0 of the steadySteady case to run
 cp -r 0.org 0
 
-# choose which mesh to use for steady state case by uncommenting/commenting the right mesh
+# choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
 #------------------------------------------------------------------------------
 # mesh with upper plane following the form of the Ramp
 #cp system/blockMeshDict.m0 system/blockMeshDict
@@ -46,7 +46,16 @@ cp -r 0.org 0
 #cp system/blockMeshDict.m3 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
-cp system/blockMeshDict.m3.1 system/blockMeshDict
+#cp system/blockMeshDict.m3.1 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp
+#cp system/blockMeshDict.v3_1 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_1
+#cp system/blockMeshDict.v3_2 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_2
+cp system/blockMeshDict.v3_3 system/blockMeshDict 
 
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m4 system/blockMeshDict
@@ -57,6 +66,7 @@ cp system/blockMeshDict.m3.1 system/blockMeshDict
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m6 system/blockMeshDict
 #------------------------------------------------------------------------------
+
 # dummy file for post-processing with paraview
 touch "$case""_steadyState".foam
 
