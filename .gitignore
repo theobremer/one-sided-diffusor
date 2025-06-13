@@ -2,7 +2,8 @@
 test_cases/kOmega-SST_2D/run
 test_cases/kOmega-SST_3D/run
 test_cases/spalart_allmaras/run
-
+test_cases/kOmegaSSTLM/run
+test_cases/kOmegaSSTIDDES/run
 
 # untracked files in the RANS_kOmega-SST_3D case 
 log.*
