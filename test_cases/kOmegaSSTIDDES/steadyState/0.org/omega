@@ -58,9 +58,13 @@ boundaryField
         value           $internalField;
     }
 
-    frontAndBack
+    front
     {
-        type            empty;
+        type            cyclic;
+    }
+    back
+    {
+        type            cyclic;
     }
 }
 

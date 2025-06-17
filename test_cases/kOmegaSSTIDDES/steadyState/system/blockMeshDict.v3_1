@@ -21,18 +21,18 @@ pi 3.1415926535;
 angleDeg 20;                                          // angle of the ramp
 angle #eval{$angleDeg/180*$pi}; 
 lengthRamp 337;                                       // length of the ramp
-heigth 400;                                            // heigth to the upper wall
+heigth 400;                                           // heigth to the upper wall
 inletX 200;                                           // length of the inlet with noSlip BC
 PreInletX 100;                                        // length of the inlet with slip BC // later refered to as PreInlet
 outletX #eval{cos($angle)*$lengthRamp+5*$lengthRamp}; // length of outlet behind the ramp. 5x is a approximation which has to be testet
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
-jetheigth 0.5;                                         // heigth of the Jet opening
-back 0;                                               // position of the backside 
-front 0.1;                                            // position of the frontside
-heigthMidPlane 25; //125                                   // heigth of the plane in the middle of the mesh to help refining the lower part
-heigthUpperPlane 375; //350    
+jetheigth 0.5;                                        // heigth of the Jet opening
+back -0.1;                                            // position of the backside 
+front 0;                                              // position of the frontside
+heigthMidPlane 25;                                    // heigth of the plane in the middle of the mesh to help refining the lower part
+heigthUpperPlane 375;    
 
-angleRedSkewness0 #eval{$angleDeg/2};                  // angle of the plain above the edge. Different angle for the rounded to reduce the cell gradient // may lead to higher non-orthogonality
+angleRedSkewness0 #eval{$angleDeg/2};                 // angle of the plain above the edge. Different angle for the rounded to reduce the cell gradient // may lead to higher non-orthogonality
 angleRedSkew0 #eval{$angleRedSkewness0/180*$pi}; 
 angleRedSkewness #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cell abovr the ramp
 angleRedSkew1 #eval{$angleRedSkewness/180*$pi};  
@@ -327,7 +327,7 @@ boundary
         type            cyclic;
         neighbourPatch  back;
         transform       translational;
-        separationVector (0 0 #eval{-2*($front-$back)*$scale});
+        separationVector (0 0 #eval{-($front-$back)*$scale});
         faces
         (
             // front
@@ -367,7 +367,7 @@ boundary
         type            cyclic;
         neighbourPatch  front;
         transform       translational;
-        separationVector (0 0 #eval{2*($front-$back)*$scale});
+        separationVector (0 0 #eval{($front-$back)*$scale});
         faces
         (
             (7 9 3 1)

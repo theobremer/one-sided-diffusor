@@ -79,6 +79,7 @@ mv log.blockMesh log.postProcess.blockMeshSteadyState
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshSteadyState
 
+foamUpgradeCyclics
 
 # parallel run simpleFoam
 runApplication decomposePar

@@ -16,7 +16,7 @@ FoamFile
 
 simulationType      LES;
 
-RAS
+LES
 {
     LESModel        kOmegaSSTDDES;
 

@@ -79,7 +79,7 @@ mv log.blockMesh log.postProcess.blockMeshSteadyState
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshSteadyState
 
-
+foamUpgradeCyclics
 # parallel run simpleFoam
 runApplication decomposePar
 mv log.decomposePar log.postProcess.decomposeParSteadyState
@@ -119,7 +119,7 @@ mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
 
-
+foamUpgradeCyclics
 
 
 # parallel run pimpleFoam
@@ -128,10 +128,10 @@ mv log.decomposePar log.postProcess.decomposeParTransient
 runParallel renumberMesh -overwrite
 mv log.renumberMesh log.postProcess.renumberMeshTransient
 runParallel $(getApplication)
-#runParallel postProcess -func "writeCellCentres" -constant -time none
-#mv log.postProcess log.postProcess.writeCellCentres
-#runParallel postProcess -func "writeCellVolumes" -constant -time none
-#mv log.postProcess log.postProcess.writeCellVolumes
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
 runApplication reconstructPar
 mv log.reconstructPar log.postProcess.reconstructParTransient
 
