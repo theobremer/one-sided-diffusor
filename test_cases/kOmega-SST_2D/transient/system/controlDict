@@ -157,7 +157,41 @@ functions
         writeControl         writeTime;
     }
 
-samples
+    fieldAverage
+    {
+        type            fieldAverage;
+        functionObjectLibs (libfieldFunctionObjects);
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        timeStart        5e-4;
+        
+        
+        fields
+        (
+            //U
+            //{
+            //    mean        yes;
+            //    prime2Mean yes;
+            //    base        time;
+            //}
+            p
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+            wallShearStress
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+        );
+    }
+
+    samples
     {
         type            surfaces;
         libs            (sampling);
@@ -178,6 +212,7 @@ samples
         fields          
         (
             wallShearStress
+            wallShearStressMean
             p
             U            
         );

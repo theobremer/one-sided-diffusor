@@ -25,10 +25,10 @@ cd "${0%/*}" || exit
 #------------------------------------------------------------------------------
 
 # folder name of the case to simulate 
-case="kOmegaSSTIDDES"
+case="kOmega-SST_2D"
 
 # folder name which gets created in the run directory of the choosen test case
-folder="kOmegaSSTIDDES_tranient"
+folder="kOmegaSST_a1=0.25_TransFromBeggining"
 
 # going in the test case folder 
 cd test_cases/$case
@@ -47,6 +47,7 @@ cp ../../Meshrun .
 cp ../../Steadyrun .
 cp ../../MultiSteadyrun .
 cp ../../Transrun .
+cp ../../TransSolorun .
 cp ../../TransJetrun .
 
 echo "created folder $folder in $case"

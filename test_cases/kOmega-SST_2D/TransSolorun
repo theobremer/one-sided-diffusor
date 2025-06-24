@@ -1,0 +1,99 @@
+#!/bin/sh
+#------------------------------------------------------------------------------
+# =========                 |
+# \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+#  \\    /   O peration     |
+#   \\  /    A nd           | www.openfoam.com
+#    \\/     M anipulation  |
+#------------------------------------------------------------------------------
+#     Copyright (C) 2011-2016 OpenFOAM Foundation
+#     Copyright (C) 2017-2021 OpenCFD Ltd.
+#------------------------------------------------------------------------------
+# License
+#     This file is part of OpenFOAM, distributed under GPL-3.0-or-later.
+#
+# Script
+#     Allrun
+#
+# Description
+#     Run tutorial cases and summarize the outcome as 'testLoopReport'
+#
+#------------------------------------------------------------------------------
+
+cd "${0%/*}" || exit
+. "${WM_PROJECT_DIR:?}"/bin/tools/RunFunctions
+#------------------------------------------------------------------------------
+case=$(basename "$PWD")
+
+# go to the steadyState directory
+cd transient
+
+# copy all system, constant and 0 of the steadySteady case to run
+cp -r 0.org 0
+
+# choose which mesh to use for mesh_1 by uncommenting/commenting the right mesh
+#------------------------------------------------------------------------------
+# mesh with upper plane following the form of the Ramp
+#cp ../steadyState/system/blockMeshDict.m0 system/blockMeshDict
+
+# mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m1 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m2 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m3 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m3.1 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp
+#cp ../steadyState/system/blockMeshDict.v3_1 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_1
+#cp ../steadyState/system/blockMeshDict.v3_2 system/blockMeshDict
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_2
+#cp ../steadyState/system/blockMeshDict.v3_3 system/blockMeshDict 
+
+# mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_3
+cp ../steadyState/system/blockMeshDict.v3_4 system/blockMeshDict 
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m4 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m5 system/blockMeshDict
+
+# refined mesh with upper plane following the form of the top wall 
+#cp ../steadyState/system/blockMeshDict.m6 system/blockMeshDict
+#------------------------------------------------------------------------------
+
+
+# dummy file for post-processing with paraview
+touch "$case""transient".foam
+
+# mesh creation
+runApplication blockMesh
+mv log.blockMesh log.postProcess.blockMeshTransient
+runApplication checkMesh -allGeometry -allTopology
+mv log.checkMesh log.postProcess.checkMeshTransient
+
+
+# parallel run simpleFoam
+runApplication decomposePar
+mv log.decomposePar log.postProcess.decomposeParTransient
+runParallel renumberMesh -overwrite
+mv log.renumberMesh log.postProcess.renumberMeshTransient
+runParallel potentialFoam -writephi
+runParallel $(getApplication)
+runParallel postProcess -func "writeCellCentres" -constant -time none
+mv log.postProcess log.postProcess.writeCellCentres
+runParallel postProcess -func "writeCellVolumes" -constant -time none
+mv log.postProcess log.postProcess.writeCellVolumes
+runApplication reconstructPar
+mv log.reconstructPar log.postProcess.reconstructParTransient
+
+
+#------------------------------------------------------------------------------

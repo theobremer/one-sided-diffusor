@@ -48,8 +48,8 @@ yCent -0.32;
 // number of cells for each block  
 nCellXPreInlet 40; 
 nCellXInlet 150;
-nCellXTrans 40;
-nCellXMainLeft 130;
+nCellXTrans 30;
+nCellXMainLeft 140;
 nCellXJet 1;
 nCellXMainRight 325;
 nCellXOutlet 700;
@@ -62,7 +62,7 @@ nCellZ 1;
 
 // mesh grading 
 GradXPreInlet 1;     // >1 to refine downstream
-GradXInlet 5;        // >1 to refine downstream //2.8
+GradXInlet 6;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           

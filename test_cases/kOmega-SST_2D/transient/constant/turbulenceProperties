@@ -23,6 +23,12 @@ RAS
     turbulence      on;
 
     printCoeffs     on;
+
+    // Optionally override default model coefficients
+    kOmegaSSTCoeffs
+    {
+        a1       0.31; // statt 0.31
+    }
 }
 
 

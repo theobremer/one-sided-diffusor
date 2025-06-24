@@ -16,7 +16,8 @@ FoamFile
 
 dimensions      [0 0 0 0 0 0 0];
 
-internalField   uniform 584.302;  //  ReTheta = 1173.51-589.428*Tu+0.2196/Tu² = 584.302   with   Tu = 100*sqrt(2/3*k)/|U| = 1 
+internalField   uniform 1000;  //  ReTheta = 1173.51-589.428*Tu+0.2196/Tu² = 584.302   with   Tu = 100*sqrt(2/3*k)/|U| = 1 // Rethetat = 1000 as in Müller et al
+
 
 boundaryField
 {
