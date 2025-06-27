@@ -48,8 +48,8 @@ solvers
 
 PIMPLE
 {
-    nCorrectors     2;
-    nNonOrthogonalCorrectors 1;  // from elbowUnsteady case 
+    nCorrectors     4; //2
+    nNonOrthogonalCorrectors 2;  // from elbowUnsteady case // 1
     nOuterCorrectors 10;         // 50
 
      residualControl

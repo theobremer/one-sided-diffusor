@@ -23,6 +23,10 @@ RAS
     turbulence      on;
 
     //printCoeffs     on;
+    kOmegaSSTCoeffs
+    {
+        a1       0.31; // statt 0.31
+    }
 }
 
 
