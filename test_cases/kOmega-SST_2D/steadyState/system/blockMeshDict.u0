@@ -55,9 +55,21 @@ nCellXMainRight 325;
 nCellXOutlet 700;
 
 nCellY 210;
-nCellYlow 75;
-nCellYmiddle 75; 
-nCellYhigh 75;
+// nCellYlow 75;
+// nCellYmiddle 75; 
+// nCellYhigh 75;
+
+// Percentage of z direction 
+perLZLow 0.0625;
+perLZMiddleLow 0.25;
+perLZMiddleHigh 0.625;
+perLZHigh 0.0625;
+
+perCellZLow 0.333;
+perCellZHigh 0.333;
+perCellZMiddleLow 0.222;
+perCellZMiddleHigh 0.111;
+
 
 nCellZ 1;
 
@@ -71,7 +83,9 @@ GradXMainRight 0.333;
 GradXOutlet 0.333;   
 
 GradYLow 40.0;         // >1 to refine in direction of the wall  
-GradYMiddle (8.0 0.125); 
+// GradYMiddle (8.0 0.125); 
+GradYMiddleLow 1;
+GradYMiddleHigh 2;
 GradYHigh 0.025;        //(2.0 0.5)
 
 vertices
@@ -170,10 +184,10 @@ blocks
         1 
         $GradXPreInlet
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
@@ -184,10 +198,10 @@ blocks
         1 
         $GradXInlet
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
     
@@ -200,10 +214,10 @@ blocks
         1 
         $GradXTrans
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
     
@@ -215,10 +229,10 @@ blocks
         1 
         $GradXMainLeft 
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
@@ -229,10 +243,10 @@ blocks
         1 
         $GradXJet 
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
@@ -243,10 +257,10 @@ blocks
         1 
         $GradXMainRight 
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
@@ -257,10 +271,10 @@ blocks
         1 
         $GradXOutlet 
         (
-        (0.0625 0.333 30) // % of lenght , % of cells, grading 
-        (0.375 0.222 1)
-        (0.5 0.111 1)
-        (0.0625 0.333 0.0333)
+        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+        ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
