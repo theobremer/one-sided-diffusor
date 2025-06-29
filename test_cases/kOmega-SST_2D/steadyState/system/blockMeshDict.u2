@@ -51,29 +51,39 @@ yCent -0.32;
 // number of cells for each block  
 nCellXPreInlet 12; 
 nCellXInlet 40;
-nCellXTrans 6;
+nCellXTrans 9;
 nCellXMainLeft 25;
 nCellXJet 1;
-nCellXMainRight 60;
-nCellXOutlet 150;
+nCellXMainRight 100;
+nCellXOutlet 250;
 
-nCellY 90;
+nCellY 150;
 // nCellYlow 75;
 // nCellYmiddle 75; 
 // nCellYhigh 75;
 
 // Percentage of lenght z direction 
 perLZLow 0.0625;
-perLZMiddleLow 0.25;
-perLZMiddleHigh 0.625;
+perLZMiddleLow 0.437;
+perLZMiddleHigh 0.438;
 perLZHigh 0.0625;
 
 // Percentage of cells z direction 
-perCellZLow 0.333;
-perCellZMiddleLow 0.166;
-perCellZMiddleHigh 0.166;
-perCellZHigh 0.333;
+perCellZLow 0.3;
+perCellZMiddleLow 0.289;
+perCellZMiddleHigh 0.111;
+perCellZHigh 0.3;
 
+// Outlet separated in sections 1 and 2
+// Percentage of lenght x direction 
+perLOut1 0.4;
+perLOut2 0.6;
+// Percentage of cells x direction 
+perCellOut1 0.7;
+perCellOut2 0.3;
+// Mesh grading 
+GradXOut1 1;
+GradXOut2 0.1;
 
 nCellZ 1;
 
@@ -83,13 +93,13 @@ GradXInlet 3;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           
-GradXMainRight 0.333;     
-GradXOutlet 0.333;   
+GradXMainRight 1;     
+// GradXOutlet 0.333;   
 
 
 // GradYMiddle (8.0 0.125); 
 GradYLow 40.0;         // >1 to refine in direction of the wall  
-GradYMiddleLow 2;
+GradYMiddleLow 1.5;
 GradYMiddleHigh 1;
 GradYHigh 0.025;        //(2.0 0.5)
 
@@ -269,17 +279,23 @@ blocks
         )
     )
 
+
+    // outlet block
     hex (36 37 31 30 40 41 35 34)  // middle
     ($nCellZ $nCellXOutlet $nCellY)                 
     simpleGrading 
     (
         1 
-        $GradXOutlet 
         (
-        ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
-        ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
-        ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
-        ($perLZHigh $perCellZHigh $GradYHigh)
+            ($perLOut1 $perCellOut1 $GradXOut1)
+            ($perLOut2 $perCellOut2 $GradXOut2)
+        )
+        
+        (
+            ($perLZLow $perCellZLow  $GradYLow) // % of lenght , % of cells, grading 
+            ($perLZMiddleLow $perCellZMiddleLow  $GradYMiddleLow)
+            ($perLZMiddleHigh $perCellZMiddleHigh $GradYMiddleHigh)
+            ($perLZHigh $perCellZHigh $GradYHigh)
         )
     )
 
