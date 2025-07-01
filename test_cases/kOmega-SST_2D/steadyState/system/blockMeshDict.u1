@@ -51,10 +51,10 @@ yCent -0.32;
 // number of cells for each block  
 nCellXPreInlet 12; 
 nCellXInlet 40;
-nCellXTrans 6;
+nCellXTrans 9;
 nCellXMainLeft 25;
 nCellXJet 1;
-nCellXMainRight 60;
+nCellXMainRight 70;
 nCellXOutlet 150;
 
 nCellY 90;
@@ -64,14 +64,14 @@ nCellY 90;
 
 // Percentage of lenght z direction 
 perLZLow 0.0625;
-perLZMiddleLow 0.25;
-perLZMiddleHigh 0.625;
+perLZMiddleLow 0.437;
+perLZMiddleHigh 0.438;
 perLZHigh 0.0625;
 
 // Percentage of cells z direction 
 perCellZLow 0.333;
-perCellZMiddleLow 0.166;
-perCellZMiddleHigh 0.166;
+perCellZMiddleLow 0.222;
+perCellZMiddleHigh 0.111;
 perCellZHigh 0.333;
 
 
@@ -83,13 +83,13 @@ GradXInlet 3;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           
-GradXMainRight 0.333;     
+GradXMainRight 0.4;     
 GradXOutlet 0.333;   
 
 
 // GradYMiddle (8.0 0.125); 
 GradYLow 40.0;         // >1 to refine in direction of the wall  
-GradYMiddleLow 2;
+GradYMiddleLow 1.5;
 GradYMiddleHigh 1;
 GradYHigh 0.025;        //(2.0 0.5)
 

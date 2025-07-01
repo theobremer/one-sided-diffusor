@@ -11,6 +11,7 @@ log.*
 *.foam
 *.obj
 *.ipynb_checkpoints
+*.venv
 
 test_cases/kOmega-SST_2D/steadyState/system/snappyHexMeshDict
 test_cases/kOmega-SST_2D/steadyState/system/blockMeshDict.snappy
