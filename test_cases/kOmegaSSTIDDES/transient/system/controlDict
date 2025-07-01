@@ -24,11 +24,11 @@ stopAt          endTime;
 
 endTime         0.05;
 
-deltaT          0.00005;
+deltaT          0.0001; // 0.00005
 
 writeControl    adjustable;
 
-writeInterval   0.005; 
+writeInterval   0.002; 
 
 purgeWrite      0;
 
@@ -46,7 +46,7 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes;
 
-maxCo           0.99; 
+maxCo           1; 
 
 
 
@@ -157,7 +157,41 @@ functions
         writeControl         writeTime;
     }
 
-samples
+fieldAverage
+    {
+        type            fieldAverage;
+        functionObjectLibs (libfieldFunctionObjects);
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        timeStart        5e-4;
+        
+        
+        fields
+        (
+            U
+            {
+                mean        yes;
+                prime2Mean yes;
+                base        time;
+            }
+            p
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+            wallShearStress
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+        );
+    }
+
+    samplesLower
     {
         type            surfaces;
         libs            (sampling);
@@ -178,6 +212,7 @@ samples
         fields          
         (
             wallShearStress
+            wallShearStressMean
             p
             U            
         );
@@ -190,7 +225,36 @@ samples
                 interpolate false;
                 invariant true;
             }
+        }
+    }   
 
+    samplesUpper
+    {
+        type            surfaces;
+        libs            (sampling);
+        log             true;
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        surfaceFormat   raw;
+        
+        formatOptions
+        {
+            raw 
+            {
+                normal true;
+            }
+        }
+        fields          
+        (
+            wallShearStress
+            //wallShearStressMean
+            p
+            //U            
+        );
+        surfaces
+        {
             upperWall
             {
                 type patch;
@@ -199,7 +263,7 @@ samples
                 invariant true;
             }
         }
-    }   
+    }
 }
 
 // ************************************************************************* //

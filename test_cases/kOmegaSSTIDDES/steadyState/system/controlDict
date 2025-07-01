@@ -77,14 +77,6 @@ functions
         writeControl    writeTime;
     }
 
-   vorticity
-   {
-        type            vorticity;
-        libs            ("libfieldFunctionObjects.so");
-        executeControl  writeTime;
-        writeControl    writeTime;
-   }
-
    
    wallShearStress
    {
