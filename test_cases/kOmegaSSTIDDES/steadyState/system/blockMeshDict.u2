@@ -56,35 +56,37 @@ nCellXTrans 9;
 nCellXMainLeft 25;
 nCellXJet 1;
 nCellXMainRight 100;
-nCellXOutlet 250;
+nCellXOutlet 240;
 
-nCellY 150;
+nCellY 120;
 // nCellYlow 75;
 // nCellYmiddle 75; 
 // nCellYhigh 75;
 
 // Percentage of lenght z direction 
-perLZLow 0.0625;
-perLZMiddleLow 0.437;
-perLZMiddleHigh 0.438;
-perLZHigh 0.0625;
+perLZLow 0.03;
+perLZMiddleLow 0.44;
+perLZMiddleHigh 0.50;
+perLZHigh 0.03;
 
 // Percentage of cells z direction 
-perCellZLow 0.3;
-perCellZMiddleLow 0.289;
-perCellZMiddleHigh 0.111;
-perCellZHigh 0.3;
+perCellZLow 0.175;
+perCellZMiddleLow 0.45;
+perCellZMiddleHigh 0.2;
+perCellZHigh 0.175;
 
 // Outlet separated in sections 1 and 2
 // Percentage of lenght x direction 
-perLOut1 0.4;
-perLOut2 0.6;
+perLOut2 0.25; // the first part in flow direction
+perLOut1 0.75; // the second part in flow direction
+
 // Percentage of cells x direction 
-perCellOut1 0.7;
-perCellOut2 0.3;
+perCellOut2 0.60;
+perCellOut1 0.4;
+
 // Mesh grading 
-GradXOut1 1;
-GradXOut2 0.1;
+GradXOut1 0.15;
+GradXOut2 1;
 
 nCellZ 1;
 
@@ -92,9 +94,9 @@ nCellZ 1;
 GradXPreInlet 1;     // >1 to refine downstream
 GradXInlet 3;        // >1 to refine downstream //2.8
 GradXTrans 1;
-GradXMainLeft 1.0;      
+GradXMainLeft 0.9;      
 GradXJet 1.0;           
-GradXMainRight 1;     
+GradXMainRight 0.9;     
 // GradXOutlet 0.333;   
 
 

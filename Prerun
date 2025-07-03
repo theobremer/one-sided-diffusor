@@ -28,11 +28,8 @@ cd "${0%/*}" || exit
 case="kOmegaSSTIDDES"
 
 # folder name which gets created in the run directory of the choosen test case
-<<<<<<< HEAD
-folder="kOmegaSSTIDDES_mesh.u2"
-=======
-folder="kOmegaSST_a1=0.25_mesh.u2"
->>>>>>> 06f2c2fc5400609ac51b9e0f5609ff135d5f386e
+
+folder="kOmegaSSTIDDES_mesh.u2_outlet_changed"
 
 # going in the test case folder 
 cd test_cases/$case
