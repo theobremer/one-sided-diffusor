@@ -19,3 +19,4 @@ test_cases/kOmega-SST_2D/steadyState/system/meshQualityDict
 test_cases/kOmega-SST_2D/steadyState/system/surfaceFeatureExtractDict
 test_cases/kOmega-SST_2D/steadyState/constant/triSurface
 
+notebooks
