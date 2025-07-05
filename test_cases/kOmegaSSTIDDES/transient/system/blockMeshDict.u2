@@ -58,7 +58,7 @@ nCellXJet 1;
 nCellXMainRight 100;
 nCellXOutlet 240;
 
-nCellY 120;
+nCellY 160;
 // nCellYlow 75;
 // nCellYmiddle 75; 
 // nCellYhigh 75;
@@ -70,10 +70,10 @@ perLZMiddleHigh 0.50;
 perLZHigh 0.03;
 
 // Percentage of cells z direction 
-perCellZLow 0.175;
-perCellZMiddleLow 0.45;
+perCellZLow 0.2;
+perCellZMiddleLow 0.4;
 perCellZMiddleHigh 0.2;
-perCellZHigh 0.175;
+perCellZHigh 0.2;
 
 // Outlet separated in sections 1 and 2
 // Percentage of lenght x direction 

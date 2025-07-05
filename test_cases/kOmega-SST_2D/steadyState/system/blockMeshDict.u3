@@ -30,8 +30,7 @@ outletX #eval{cos($angle)*$lengthRamp+5*$lengthRamp}; // length of outlet behind
 
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
 jetheigth 2.5;                                         // heigth of the Jet opening // 0.5
-front 0;
-back -1;
+width2D 5;
 heigthMidPlane 25; //125                                   // heigth of the plane in the middle of the mesh to help refining the lower part
 heigthUpperPlane 375; //350
 
@@ -58,22 +57,22 @@ nCellXJet 1;
 nCellXMainRight 100;
 nCellXOutlet 240;
 
-nCellY 160;
+nCellY 200;
 // nCellYlow 75;
 // nCellYmiddle 75; 
 // nCellYhigh 75;
 
 // Percentage of lenght z direction 
-perLZLow 0.03;
-perLZMiddleLow 0.44;
+perLZLow 0.005;
+perLZMiddleLow 0.499;
 perLZMiddleHigh 0.50;
-perLZHigh 0.03;
+perLZHigh 0.005;
 
 // Percentage of cells z direction 
-perCellZLow 0.2;
-perCellZMiddleLow 0.4;
+perCellZLow 0.1;
+perCellZMiddleLow 0.6;
 perCellZMiddleHigh 0.2;
-perCellZHigh 0.2;
+perCellZHigh 0.1;
 
 // Outlet separated in sections 1 and 2
 // Percentage of lenght x direction 
@@ -101,95 +100,95 @@ GradXMainRight 0.9;
 
 
 // GradYMiddle (8.0 0.125); 
-GradYLow 40.0;         // >1 to refine in direction of the wall  
-GradYMiddleLow 1.5;
+GradYLow 15;         // >1 to refine in direction of the wall  
+GradYMiddleLow 50;
 GradYMiddleHigh 1;
-GradYHigh 0.025;        //(2.0 0.5)
+GradYHigh 0.0667;        //(2.0 0.5)
 
 vertices
 (
-    (#eval{-$PreInletX-$inletX} 0 $front) // 0
-    (#eval{-$PreInletX-$inletX} 0 $back) // 1    
-    (#eval{-$PreInletX-$inletX} $heigthMidPlane $front) // 2
-    (#eval{-$PreInletX-$inletX} $heigthMidPlane $back) // 3    
-    (#eval{-$PreInletX-$inletX} $heigth $front) // 4
-    (#eval{-$PreInletX-$inletX} $heigth $back) // 5
+    (#eval{-$PreInletX-$inletX} 0 $width2D) // 0
+    (#eval{-$PreInletX-$inletX} 0 -$width2D) // 1    
+    (#eval{-$PreInletX-$inletX} $heigthMidPlane $width2D) // 2
+    (#eval{-$PreInletX-$inletX} $heigthMidPlane -$width2D) // 3    
+    (#eval{-$PreInletX-$inletX} $heigth $width2D) // 4
+    (#eval{-$PreInletX-$inletX} $heigth -$width2D) // 5
 
-    (-$inletX 0 $front)  // 6
-    (-$inletX 0 $back)  // 7
-    (-$inletX $heigthMidPlane $front)  // 8
-    (-$inletX $heigthMidPlane $back)  // 9
-    (-$inletX $heigth $front)  // 10
-    (-$inletX $heigth $back)  // 11
+    (-$inletX 0 $width2D)  // 6
+    (-$inletX 0 -$width2D)  // 7
+    (-$inletX $heigthMidPlane $width2D)  // 8
+    (-$inletX $heigthMidPlane -$width2D)  // 9
+    (-$inletX $heigth $width2D)  // 10
+    (-$inletX $heigth -$width2D)  // 11
     
-    ($x2 $y2 $front)  // 12
-    ($x2 $y2 $back)  // 13
-    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} $front)  // 14
-    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} $back)  // 15
-    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} $front)  // 16
-    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} $back)  // 17
+    ($x2 $y2 $width2D)  // 12
+    ($x2 $y2 -$width2D)  // 13
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} $width2D)  // 14
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x2} #eval{$heigthMidPlane+$y2} -$width2D)  // 15
+    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} $width2D)  // 16
+    (#eval{tan($angleRedSkew0)*$heigth+$x2} #eval{$heigth} -$width2D)  // 17
 
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $front) // 18
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $back) // 19
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $front) // 20
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $back) // 21
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))} $heigth $front) // 22
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))} $heigth $back) // 23
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $width2D) // 18
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} -$width2D) // 19
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} $width2D) // 20
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)} -$width2D) // 21
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))} $heigth $width2D) // 22
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))} $heigth -$width2D) // 23
 
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge)} $front) // 24
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge)} $back) // 25
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)} $front) // 26
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)} $back) // 27
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))} $heigth $front) // 28
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))} $heigth $back) // 29
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge)} $width2D) // 24
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)} #eval{-sin($angle)*($lengthRamp-$jetLowEdge)} -$width2D) // 25
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)} $width2D) // 26
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)} -$width2D) // 27
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))} $heigth $width2D) // 28
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))} $heigth -$width2D) // 29
 
-    (#eval{cos($angle)*$lengthRamp} #eval{ (-1)*(sin($angle))*$lengthRamp} $front)  // 30
-    (#eval{cos($angle)*$lengthRamp} #eval{ (-1)*(sin($angle))*$lengthRamp} $back)  // 31
-    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $front)  // 32
-    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $back)  // 33    
-    (#eval{cos($angle)*($lengthRamp)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))} $heigth $front)  // 34
-    (#eval{cos($angle)*($lengthRamp)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))} $heigth $back)  // 35
+    (#eval{cos($angle)*$lengthRamp} #eval{ (-1)*(sin($angle))*$lengthRamp} $width2D)  // 30
+    (#eval{cos($angle)*$lengthRamp} #eval{ (-1)*(sin($angle))*$lengthRamp} -$width2D)  // 31
+    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $width2D)  // 32
+    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} -$width2D)  // 33    
+    (#eval{cos($angle)*($lengthRamp)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))} $heigth $width2D)  // 34
+    (#eval{cos($angle)*($lengthRamp)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))} $heigth -$width2D)  // 35
     
-    ($outletX #eval{ (-1)*sin($angle)*$lengthRamp} $front) // 36
-    ($outletX #eval{ (-1)*sin($angle)*$lengthRamp} $back) // 37
-    ($outletX #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $front) // 38
-    ($outletX #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $back) // 39
-    ($outletX $heigth $front) // 40
-    ($outletX $heigth $back) // 41    
+    ($outletX #eval{ (-1)*sin($angle)*$lengthRamp} $width2D) // 36
+    ($outletX #eval{ (-1)*sin($angle)*$lengthRamp} -$width2D) // 37
+    ($outletX #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} $width2D) // 38
+    ($outletX #eval{$heigthMidPlane-sin($angle)*($lengthRamp)} -$width2D) // 39
+    ($outletX $heigth $width2D) // 40
+    ($outletX $heigth -$width2D) // 41    
     
-    (#eval{-$PreInletX-$inletX} $heigthUpperPlane $front) // 42
-    (#eval{-$PreInletX-$inletX} $heigthUpperPlane $back) // 43
-    (-$inletX $heigthUpperPlane $front)  // 44
-    (-$inletX $heigthUpperPlane $back)  // 45
-    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} $front)  // 46
-    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} $back)  // 47
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane $front) // 48
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane $back) // 49
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))} $heigthUpperPlane $front) // 50
-    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))} $heigthUpperPlane $back) // 51
-    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))} $heigthUpperPlane $front)  // 52
-    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))} $heigthUpperPlane $back)  // 53
-    ($outletX $heigthUpperPlane $front) // 54
-    ($outletX $heigthUpperPlane $back) // 55
+    (#eval{-$PreInletX-$inletX} $heigthUpperPlane $width2D) // 42
+    (#eval{-$PreInletX-$inletX} $heigthUpperPlane -$width2D) // 43
+    (-$inletX $heigthUpperPlane $width2D)  // 44
+    (-$inletX $heigthUpperPlane -$width2D)  // 45
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} $width2D)  // 46
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2} #eval{$heigthUpperPlane} -$width2D)  // 47
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane $width2D) // 48
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))} $heigthUpperPlane -$width2D) // 49
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))} $heigthUpperPlane $width2D) // 50
+    (#eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))} $heigthUpperPlane -$width2D) // 51
+    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))} $heigthUpperPlane $width2D)  // 52
+    (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))} $heigthUpperPlane -$width2D)  // 53
+    ($outletX $heigthUpperPlane $width2D) // 54
+    ($outletX $heigthUpperPlane -$width2D) // 55
 
-    ($x1 0 $front) // 56
-    ($x1 0 $back) // 57
-    ($x1 $heigthMidPlane $front) // 58
-    ($x1 $heigthMidPlane $back) // 59
-    ($x1 $heigthUpperPlane $front) // 60
-    ($x1 $heigthUpperPlane $back) // 61
-    ($x1 $heigth $front) // 62
-    ($x1 $heigth $back) //63
+    ($x1 0 $width2D) // 56
+    ($x1 0 -$width2D) // 57
+    ($x1 $heigthMidPlane $width2D) // 58
+    ($x1 $heigthMidPlane -$width2D) // 59
+    ($x1 $heigthUpperPlane $width2D) // 60
+    ($x1 $heigthUpperPlane -$width2D) // 61
+    ($x1 $heigth $width2D) // 62
+    ($x1 $heigth -$width2D) //63
 
 );
 
 
 edges
 (
-    arc 56 12 ($xCent $yCent $front)
-    arc 57 13 ($xCent $yCent $back)
-    //arc 58 14 ($xCent #eval{$heigthMidPlane+$yCent} $front)
-    //arc 59 15 ($xCent #eval{$heigthMidPlane+$yCent} $back)
+    arc 56 12 ($xCent $yCent $width2D)
+    arc 57 13 ($xCent $yCent -$width2D)
+    //arc 58 14 ($xCent #eval{$heigthMidPlane+$yCent} $width2D)
+    //arc 59 15 ($xCent #eval{$heigthMidPlane+$yCent} -$width2D)
 );
 
 
@@ -371,12 +370,9 @@ boundary
             (25 19 18 24)
         );
     }
-    front
+    frontAndBack
     {
-        type            cyclic;
-        neighbourPatch  back;
-        transform       translational;
-        separationVector (0 0 #eval{-($front-$back)*$scale});
+        type            empty;
         faces
         (
             // front
@@ -393,18 +389,7 @@ boundary
             (30 34 28 24)
             
             (36 40 34 30)
-                       
-        );
-    }
-
-    back
-    {
-        type            cyclic;
-        neighbourPatch  front;
-        transform       translational;
-        separationVector (0 0 #eval{($front-$back)*$scale});
-        faces
-        (
+                        
             // back 
             (7 11 5 1)
             
@@ -419,6 +404,7 @@ boundary
             (31 35 29 25)
             
             (37 41 35 31)
+                       
         );
     }
 );

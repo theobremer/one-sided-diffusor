@@ -6,6 +6,11 @@ The instructions and tests are tailored to:
 ## Test case
 To run a simulation case edit the case type and the new folder name in the Prerun script and execute. The script creates a folder in the run directory of the choosen case. go to the created folder and execute one of the following scripts. To only run the meshing execute the Meshrun scriprt. To run meshing, potentialFoam and simpleFoam execute the Steadyrun script. To run the transient simulation execute the Transrun. This script runs potentialFoam and simpleFoam beforehand as startvalues. To run the case with the active jet, run the Allrun script. This script also executes the steady case first and interpolates the solution with mapFields to the transient mesh with the jet as an inlet patch. It changes the boundary conditions of the jet from wall to inlet. Velocities for the jet can be changed in the Allrun script.
 
+## Meshes
+There are four types of meshes in the case. 
+- the .u meshes are the most simple ones, built only from 7 blocks 
+To make the calculation of the grading simpler this https://openfoamwiki.net/index.php/Scripts/blockMesh_grading_calculation tool was used. 
+
 ### 2D RANS simulation with the kOmega-SST turbulence model of the one sided diffusor
 The main parameters of the simulation are:
 - nu = 1.53e-5 m²/s

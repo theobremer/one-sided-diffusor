@@ -70,7 +70,10 @@ cp -r 0.org 0
 #cp ../steadyState/system/blockMeshDict.m6 system/blockMeshDict
 
 # mesh built with only 7 blocks less refined
-cp ../steadyState/system/blockMeshDict.u2 system/blockMeshDict
+#cp ../steadyState/system/blockMeshDict.u2 system/blockMeshDict
+
+# new architecture with less blocks. minimal refinement. less cells in the boundary layer
+cp system/blockMeshDict.u3 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 

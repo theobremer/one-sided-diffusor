@@ -58,7 +58,7 @@ cp -r 0.org 0
 #cp system/blockMeshDict.v3_3 system/blockMeshDict 
 
 # mesh refined like the m3.1 but with rounded edge at beginning of ramp with smaller radius then .v3_3
-cp system/blockMeshDict.v3_4 system/blockMeshDict 
+#cp system/blockMeshDict.v3_4 system/blockMeshDict 
 
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m4 system/blockMeshDict
@@ -68,6 +68,9 @@ cp system/blockMeshDict.v3_4 system/blockMeshDict
 
 # refined mesh with upper plane following the form of the top wall 
 #cp system/blockMeshDict.m6 system/blockMeshDict
+
+# new architecture with less blocks. minimal refinement. less cells in the boundary layer
+cp system/blockMeshDict.u3 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview

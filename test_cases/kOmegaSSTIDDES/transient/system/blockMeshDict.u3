@@ -58,22 +58,22 @@ nCellXJet 1;
 nCellXMainRight 100;
 nCellXOutlet 240;
 
-nCellY 160;
+nCellY 200;
 // nCellYlow 75;
 // nCellYmiddle 75; 
 // nCellYhigh 75;
 
 // Percentage of lenght z direction 
-perLZLow 0.03;
-perLZMiddleLow 0.44;
+perLZLow 0.005;
+perLZMiddleLow 0.499;
 perLZMiddleHigh 0.50;
-perLZHigh 0.03;
+perLZHigh 0.005;
 
 // Percentage of cells z direction 
-perCellZLow 0.2;
-perCellZMiddleLow 0.4;
+perCellZLow 0.1;
+perCellZMiddleLow 0.6;
 perCellZMiddleHigh 0.2;
-perCellZHigh 0.2;
+perCellZHigh 0.1;
 
 // Outlet separated in sections 1 and 2
 // Percentage of lenght x direction 
@@ -101,10 +101,10 @@ GradXMainRight 0.9;
 
 
 // GradYMiddle (8.0 0.125); 
-GradYLow 40.0;         // >1 to refine in direction of the wall  
+GradYLow 10;         // >1 to refine in direction of the wall  
 GradYMiddleLow 1.5;
 GradYMiddleHigh 1;
-GradYHigh 0.025;        //(2.0 0.5)
+GradYHigh 0.1;        //(2.0 0.5)
 
 vertices
 (
