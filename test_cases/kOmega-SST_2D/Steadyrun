@@ -76,7 +76,10 @@ cp -r 0.org 0
 #cp system/blockMeshDict.t5 system/blockMeshDict
 
 # mesh based on boundary layer calculations medium refinement
-cp system/blockMeshDict.t4 system/blockMeshDict
+#cp system/blockMeshDict.t4 system/blockMeshDict
+
+# mesh based on boundary layer calculations low refinement
+cp system/blockMeshDict.t3 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview

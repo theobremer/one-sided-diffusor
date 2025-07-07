@@ -73,7 +73,16 @@ cp -r 0.org 0
 #cp ../steadyState/system/blockMeshDict.u2 system/blockMeshDict
 
 # new architecture with less blocks. minimal refinement. less cells in the boundary layer
-cp system/blockMeshDict.u3 system/blockMeshDict
+#cp .../steadysystem/blockMeshDict.u3 system/blockMeshDict
+
+# mesh based on boundary layer calculations hightly refined 
+#cp system/blockMeshDict.t5 system/blockMeshDict
+
+# mesh based on boundary layer calculations medium refinement
+#cp system/blockMeshDict.t4 system/blockMeshDict
+
+# mesh based on boundary layer calculations low refinement
+cp system/blockMeshDict.t3 system/blockMeshDict
 #------------------------------------------------------------------------------
 
 
