@@ -27,7 +27,7 @@ PreInletX 100;                                        // length of the inlet wit
 outletX #eval{cos($angle)*$lengthRamp+5*$lengthRamp}; // length of outlet behind the ramp. 5x is a approximation which has to be testet
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
 jetheigth 1.3;                                        // heigth of the Jet opening, in experiment 0.5
-back -0.1;                                            // position of the backside 
+back -1;                                            // position of the backside 
 front 0;                                              // position of the frontside
 heigthMidPlane 5;                                    // heigth of the plane in the middle of the mesh to help refining the lower part
 heigthUpperPlane 395; 

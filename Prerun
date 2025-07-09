@@ -25,11 +25,11 @@ cd "${0%/*}" || exit
 #------------------------------------------------------------------------------
 
 # folder name of the case to simulate 
-case="kOmega-SST_2D"
+case="kOmegaSSTIDDES"
 
 # folder name which gets created in the run directory of the choosen test case
 
-folder="kOmegaSST_mesh.t3"
+folder="kOmegaSSTIDDES_mesh.t2_relP_0.9_Pimple_30"
 
 # going in the test case folder 
 cd test_cases/$case

@@ -10,36 +10,23 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      turbulenceProperties;
+    object      topoSetDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType      LES;
-
-LES
-{
-    LESModel        kOmegaSSTDDES;
-
-    turbulence      on;
-
-    printCoeffs     on;
-
-    delta           IDDESDelta;
-
-    IDDESDeltaCoeffs
+actions
+(
     {
-        hmax           maxDeltaxyzCubeRoot;
-        maxDeltaxyzCubeRootCoeffs
+        name    lowerWall;
+        type    cellSet;
+        action  new;
+        source  patchToCell;
+        patchToSetCoeffs
         {
-        }
-        
-        wallDistCoeffs
-        {
-            nRequired 1;
+            patch    lowerWall;       // Name aus boundary file
+            distance 0.005;         // max. Abstand zur Patch-Fläche
         }
     }
-}
-
+);
 
 // ************************************************************************* //
-

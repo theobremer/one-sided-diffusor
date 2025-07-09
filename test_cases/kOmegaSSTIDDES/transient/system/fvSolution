@@ -54,10 +54,15 @@ PIMPLE
 
      residualControl
     {
-        "(U|p|omega|k)"
+        "(U|omega|k)"
         {
             relTol          0;
             tolerance       1e-07;
+        }
+        p
+        {
+            relTol          0.01;
+            tolerance       1e-05;
         }
     }
 }
@@ -73,7 +78,7 @@ relaxationFactors // should be testet further
     }
     fields
     {
-	p		0.8;  
+	p		0.9;  
     }
 }
 

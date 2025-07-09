@@ -10,36 +10,34 @@ FoamFile
     version     2.0;
     format      ascii;
     class       dictionary;
-    object      turbulenceProperties;
+    object      topoSetDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-simulationType      LES;
+actions
 
-LES
-{
-    LESModel        kOmegaSSTDDES;
+(
 
-    turbulence      on;
-
-    printCoeffs     on;
-
-    delta           IDDESDelta;
-
-    IDDESDeltaCoeffs
     {
-        hmax           maxDeltaxyzCubeRoot;
-        maxDeltaxyzCubeRootCoeffs
+
+        name c1;
+
+        type cellSet;
+
+        action new;
+
+        source boxToCell;
+        sourceInfo
         {
+            // Achte auf (minX minY minZ) < (maxX maxY maxZ)
+            box (0.0 -0.115261 -0.001) (0.5  0.1      0.0);
         }
-        
-        wallDistCoeffs
-        {
-            nRequired 1;
-        }
+
     }
-}
+
+
+
+);
 
 
 // ************************************************************************* //
-
