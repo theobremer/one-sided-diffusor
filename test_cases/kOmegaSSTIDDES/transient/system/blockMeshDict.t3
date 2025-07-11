@@ -47,33 +47,34 @@ xCent 0;
 yCent -0.32;
 
 // number of cells for each block  
-nCellXPreInlet 9; 
-nCellXInlet 33;
-nCellXTrans 7;
-nCellXMainLeft 33;
+nCellXPreInlet 45; 
+nCellXInlet 100;
+nCellXTrans 3;
+nCellXMainLeft 30;
 nCellXJet 1;
-nCellXMainRight 114;
-nCellXOutlet 180;
+nCellXMainRight 130;
+nCellXOutlet 800;
 
-nCellYlow 23; // first cell thickness of 3e-5
-nCellYmiddle 106; 
-nCellYhigh 23;
+nCellYlow 19; // first cell thickness of 3e-5
+nCellYmiddle 120;
+nCellYhigh 2;
 
 nCellZ 1;
 
 // mesh grading 
 GradXPreInlet 1;     // >1 to refine downstream
-GradXInlet 6;        // >1 to refine downstream //2.8
+GradXInlet 1;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           
-GradXMainRight 0.7;     
-//GradXOutlet 0.333; 
-GradXOutlet ((0.7 0.35 0.18)(0.3 0.65 0.5)); // first one is sreamwise the second
+GradXMainRight 1;     
+GradXOutlet 1; 
+//GradXOutlet ((0.65 0.25 0.8)(0.05 0.05 0.333)(0.3 0.7 1)); // first one is sreamwise the second
 
-GradYLow 22;         //expension ration per cell of 1.15
-GradYMiddle ((0.4 0.7 1)(0.6 0.3 1));      // expansion ratio per cell of 1.05 = 14
-GradYHigh 0.045;
+GradYLow 26.6;         //expension ration per cell of 1.2
+GradYMiddle ((0.4 0.55 4.5)(0.6 0.45 1));      // expansion ratio per cell of 1.05 = 14
+//GradYMiddle ((0.4 0.6 1)(0.6 0.4 1)); 
+GradYHigh 0.6;
 
 vertices
 (
@@ -141,14 +142,14 @@ vertices
     ($outletX $heigthUpperPlane $front) // 54
     ($outletX $heigthUpperPlane $back) // 55
 
-    ($x1 0 $front) // 56
-    ($x1 0 $back) // 57
-    ($x1 $heigthMidPlane $front) // 58
-    ($x1 $heigthMidPlane $back) // 59
-    ($x1 $heigthUpperPlane $front) // 60
-    ($x1 $heigthUpperPlane $back) // 61
-    ($x1 $heigth $front) // 62
-    ($x1 $heigth $back) //63
+    ($x1 0 $width2D) // 56
+    ($x1 0 -$width2D) // 57
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x1} $heigthMidPlane $width2D) // 58
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x1} $heigthMidPlane -$width2D) // 59
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x1} $heigthUpperPlane $width2D) // 60
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x1} $heigthUpperPlane -$width2D) // 61
+    (#eval{tan($angleRedSkew0)*$heigth+$x1} $heigth $width2D) // 62
+    (#eval{tan($angleRedSkew0)*$heigth+$x1} $heigth -$width2D) //63
 
 );
 

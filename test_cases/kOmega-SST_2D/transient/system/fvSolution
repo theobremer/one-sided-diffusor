@@ -19,7 +19,7 @@ solvers
     p
     {
         solver           GAMG;
-        tolerance        1e-7;
+        tolerance        1e-8;
         relTol           0.001;
         smoother         DICGaussSeidel;
     }
@@ -49,7 +49,7 @@ solvers
 PIMPLE
 {
     nCorrectors     2; //2
-    nNonOrthogonalCorrectors 1;  // from elbowUnsteady case // 1
+    nNonOrthogonalCorrectors 2;  // from elbowUnsteady case // 1
     nOuterCorrectors 10;         // 50
 
      residualControl

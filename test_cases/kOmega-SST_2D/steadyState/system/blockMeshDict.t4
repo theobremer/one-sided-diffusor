@@ -142,12 +142,12 @@ vertices
 
     ($x1 0 $width2D) // 56
     ($x1 0 -$width2D) // 57
-    ($x1 $heigthMidPlane $width2D) // 58
-    ($x1 $heigthMidPlane -$width2D) // 59
-    ($x1 $heigthUpperPlane $width2D) // 60
-    ($x1 $heigthUpperPlane -$width2D) // 61
-    ($x1 $heigth $width2D) // 62
-    ($x1 $heigth -$width2D) //63
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x1} $heigthMidPlane $width2D) // 58
+    (#eval{tan($angleRedSkew0)*$heigthMidPlane+$x1} $heigthMidPlane -$width2D) // 59
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x1} $heigthUpperPlane $width2D) // 60
+    (#eval{tan($angleRedSkew0)*$heigthUpperPlane+$x1} $heigthUpperPlane -$width2D) // 61
+    (#eval{tan($angleRedSkew0)*$heigth+$x1} $heigth $width2D) // 62
+    (#eval{tan($angleRedSkew0)*$heigth+$x1} $heigth -$width2D) //63
 
 );
 

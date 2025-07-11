@@ -28,9 +28,9 @@ divSchemes
 {
     default         none;
 
-    div(phi,U)      bounded Gauss linearUpwind grad(U);
+    div(phi,U)      Gauss linearUpwind grad(U);
 
-    turbulence      bounded Gauss limitedLinear 1;
+    turbulence      Gauss limitedLinear 1;
     div(phi,k)      $turbulence;
     div(phi,epsilon) $turbulence;
     div(phi,omega)  $turbulence;
