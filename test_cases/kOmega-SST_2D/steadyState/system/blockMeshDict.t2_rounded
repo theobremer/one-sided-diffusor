@@ -26,7 +26,7 @@ inletX 200;                                           // length of the inlet wit
 PreInletX 100;                                        // length of the inlet with slip BC // later refered to as PreInlet
 outletX #eval{cos($angle)*$lengthRamp+5*$lengthRamp}; // length of outlet behind the ramp. 5x is a approximation which has to be testet
 jetLowEdge 270;                                       // distance between the low edge of the jet and the end of the ramp
-jetheigth 1.5;                                         // heigth of the Jet opening in experiment 0.5, changed for simpler mesh
+jetheigth 3;                                         // heigth of the Jet opening in experiment 0.5, changed for simpler mesh
 width2D 2;
 heigthMidPlane 5; //125                                   // heigth of the plane in the middle of the mesh to help refining the lower part
 heigthUpperPlane 395; //350
@@ -43,49 +43,45 @@ x1 -3;
 x2 3;
 y2 #eval{-$x2*tan($angle)};
 xCent 0;
-yCent #eval{-0.016*$angle};
+yCent #eval{-0.016*$angleDeg};
 
 // 2 rounded corners 
 x3 -3;
 x4 3;
 x2Cent 0;
-y2Cent #eval{0.0125*$angle};
+y2Cent #eval{0.0125*$angleDeg};
 x3Cent 0;
-y3Cent #eval{0.0125*$angle};
-
-
-
-
+y3Cent #eval{0.0125*$angleDeg};
 
 // number of cells for each block  
-nCellXPreInlet 45; 
-nCellXInlet 110;
-nCellXTrans 4;
-nCellXMainLeft 44;
+nCellXPreInlet 30; 
+nCellXInlet 66;
+nCellXTrans 2;
+nCellXMainLeft 20;
 nCellXJet 1;
-nCellXMainRight 180;
-nCellXCorner2 4;
-nCellXOutlet 900;
+nCellXMainRight 87;
+nCellXCorner2 2;
+nCellXOutlet 540;
 
-nCellYlow 19; // first cell thickness of 3e-5
-nCellYmiddle 160;
+nCellYlow 15; // first cell thickness of 3e-5, last cell thickness of 0.0012
+nCellYmiddle 91;
 nCellYhigh 2;
 
 nCellZ 1;
 
 // mesh grading 
 GradXPreInlet 1;     // >1 to refine downstream
-GradXInlet 1.3;        // >1 to refine downstream //2.8
+GradXInlet 1;        // >1 to refine downstream //2.8
 GradXTrans 1;
 GradXMainLeft 1.0;      
 GradXJet 1.0;           
-GradXMainRight 1;  
-GradXCorner2 1;   
-//GradXOutlet 0.95; 
-GradXOutlet ((0.65 0.58 0.8)(0.05 0.06 0.9)(0.3 0.36 1)); // first one is sreamwise the second
+GradXMainRight 1; 
+GradXCorner2 1;     
+GradXOutlet 1; 
+//GradXOutlet ((0.65 0.25 0.8)(0.05 0.05 0.333)(0.3 0.7 1)); // first one is sreamwise the second
 
-GradYLow 26.6;         //expension ration per cell of 1.2
-GradYMiddle ((0.4 0.55 3.5)(0.6 0.45 1));      // expansion ratio per cell of 1.05 = 14
+GradYLow 40;         //expension ration per cell of 1.2
+GradYMiddle ((0.4 0.56 4.5)(0.6 0.44 1));      // 51 + 40 = 91 cells
 //GradYMiddle ((0.4 0.6 1)(0.6 0.4 1)); 
 GradYHigh 0.6;
 

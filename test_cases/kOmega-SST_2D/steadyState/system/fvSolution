@@ -48,13 +48,13 @@ solvers
 
 SIMPLE
 {
-    nNonOrthogonalCorrectors 0;
+    nNonOrthogonalCorrectors 2;
     consistent      yes;
 
     residualControl
     {
         p               1e-5;
-        U               1e-5;
+        U               1e-6;
         "(k|epsilon|omega|f|v2)" 1e-5;
     }
 }

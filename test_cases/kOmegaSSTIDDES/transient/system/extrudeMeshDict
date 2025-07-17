@@ -63,7 +63,7 @@ extrudeModel        linearNormal;
 //- Extrudes into sphere with grading according to pressure (atmospherics)
 //extrudeModel        sigmaRadial;
 
-nLayers             5;
+nLayers             4;
 
 expansionRatio      1.0;
 
@@ -76,13 +76,13 @@ sectorCoeffs
 
 linearNormalCoeffs
 {
-    thickness       0.005;
+    thickness       0.008;
 }
 
 linearDirectionCoeffs
 {
     direction       (0 1 0);
-    thickness       0.05;
+    thickness       0.008;
 }
 
 linearRadialCoeffs
@@ -112,5 +112,11 @@ mergeFaces false;
 // Merge small edges. Fraction of bounding box.
 mergeTol 0;
 
+
+patchInfo
+{
+    type cyclic; // <- wichtig!
+    matchTolerance 1e-4;
+}
 
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //

@@ -85,7 +85,10 @@ cp -r 0.org 0
 #cp system/blockMeshDict.t3 system/blockMeshDict
 
 # mesh based on boundary layer calculations low refinement
-cp system/blockMeshDict.t2 system/blockMeshDict
+#cp system/blockMeshDict.t2 system/blockMeshDict
+
+# both corners rounded, medium refinement, 3D
+cp system/blockMeshDict.t3_rounded_3D system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
@@ -94,20 +97,6 @@ touch "$case""transient".foam
 # mesh creation
 runApplication blockMesh
 mv log.blockMesh log.postProcess.blockMeshTransient
-
-
-# refineing certain parts of the Mesh 
-# box in recirculation region
-# topoSet -dict system/topoSetDict
-# refineMesh -dict system/refineMeshDict -overwrite
-
-# topoSet -dict system/topoSetDict_lowerBoundaryLayer
-# refineMesh -dict system/refineMeshDict_lowerBoundaryLayer -overwrite
-
-# topoSet -dict system/topoSetDict_upperBoundaryLayer
-# refineMesh -dict system/refineMeshDict_upperBoundaryLayer -overwrite
-
-# cp -r 0/polyMesh/* constant/polyMesh
 
 # checking Mesh
 runApplication checkMesh -allGeometry -allTopology

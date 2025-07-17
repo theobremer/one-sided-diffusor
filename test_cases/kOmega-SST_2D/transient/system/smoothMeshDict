@@ -1,0 +1,46 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2412                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      smoothMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// Number of centroidal smoothing iterations
+centroidalIters             100;
+
+// Maximum blending fraction for boundary smoothing
+boundaryMaxBlendingFraction 0.3;
+
+// Boundary expansion ratio (how far boundaries can be moved)
+boundaryExpansionRatio      1.2;
+
+// Desired boundary edge length
+boundaryEdgeLength          0.00003;
+
+// Maximum number of boundary layers to smooth
+boundaryMaxLayers           25;
+
+// Minimum internal edge length
+minEdgeLength               0.05;
+
+// Maximum allowed step length during smoothing
+//maxStepLength               0.05;
+
+// List of patches to smooth
+patches                     (lowerWall);
+
+// Optional: stop smoothing if improvement is too small
+writeInterval               0;         // Set >0 if you want intermediate output
+tolerance                   1e-6;      // Optional stopping tolerance
+
+
+// ************************************************************************* //

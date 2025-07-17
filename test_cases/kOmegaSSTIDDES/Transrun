@@ -70,7 +70,10 @@ cp -r 0.org 0
 #cp system/blockMeshDict.m6 system/blockMeshDict
 
 # new architecture with less blocks. minimal refinement. less cells in the boundary layer
-cp system/blockMeshDict.u3 system/blockMeshDict
+#cp system/blockMeshDict.u3 system/blockMeshDict
+
+# both corners rounded, medium refinement, 3D
+cp system/blockMeshDict.t3_rounded_3D system/blockMeshDict
 #------------------------------------------------------------------------------
 
 # dummy file for post-processing with paraview
@@ -82,7 +85,6 @@ mv log.blockMesh log.postProcess.blockMeshSteadyState
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshSteadyState
 
-foamUpgradeCyclics
 # parallel run simpleFoam
 runApplication decomposePar
 mv log.decomposePar log.postProcess.decomposeParSteadyState
@@ -121,8 +123,6 @@ runApplication blockMesh
 mv log.blockMesh log.postProcess.blockMeshTransient
 runApplication checkMesh -allGeometry -allTopology
 mv log.checkMesh log.postProcess.checkMeshTransient
-
-foamUpgradeCyclics
 
 
 # parallel run pimpleFoam

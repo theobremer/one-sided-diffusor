@@ -1,0 +1,3 @@
+Execution:
+- To run only the transient simulation with the potentialFoam as an initial condition, execute the TransSolo script. Might not be stable!
+- To run only the transient simulation with the simpleFoam result as an initial condition, execute the Transrun script. This will run the simpleFoam case, copy the result in the 0 folder of the transient case and use it as an initial condition. Is stable.

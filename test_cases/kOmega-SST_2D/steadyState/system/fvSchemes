@@ -28,7 +28,7 @@ divSchemes
 {
     default         none;
 
-    div(phi,U)      Gauss linearUpwind grad(U); //Gauss limitedLinear 1 grad(U);  
+    div(phi,U)      Gauss linearUpwindV grad(U); //Gauss limitedLinear 1 grad(U);  // Gauss liniarUpwind grad(U); works
 
     turbulence      Gauss limitedLinear 1;
     div(phi,k)      $turbulence;

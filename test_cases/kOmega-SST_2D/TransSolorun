@@ -79,7 +79,10 @@ cp -r 0.org 0
 #cp ../steadyState/system/blockMeshDict.t4 system/blockMeshDict
 
 # mesh based on boundary layer calculations low refinement
-cp ../steadyState/system/blockMeshDict.t3 system/blockMeshDict
+#cp ../steadyState/system/blockMeshDict.t3 system/blockMeshDict
+
+# mesh based on boundary layer calculations low refinement. Lower corner rounded
+cp ../steadyState/system/blockMeshDict.t3_rounded system/blockMeshDict
 #------------------------------------------------------------------------------
 
 
