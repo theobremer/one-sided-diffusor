@@ -22,17 +22,17 @@ startTime       0;
 
 stopAt          endTime;
 
-endTime         0.3;
+endTime         0.1;
 
-deltaT          0.0001;
+deltaT          0.00005;
 
 writeControl    adjustable;
 
-writeInterval   0.01;
+writeInterval   0.005; 
 
 purgeWrite      0;
 
-writeFormat     ascii;
+writeFormat     binary;
 
 writePrecision  6;
 
@@ -46,13 +46,224 @@ runTimeModifiable yes;
 
 adjustTimeStep  yes;
 
-maxCo           5;
+maxCo           0.99; 
+
+
 
 functions
 {
-    //#include "FOs/FOyPlus"
-    //#include "FOs/FOwallShearStress"
-}
+    solverInfo
+    {
+        type        solverInfo;
+        libs ("libutilityFunctionObjects.so");
 
+        fields
+        (
+            U
+            p
+            k
+            omega
+        );
+        writeResidualFields yes;
+
+        // executeControl  writeTime;
+        executeControl       timeStep;    
+        executeInterval      1;
+
+        writeControl   writeTime;
+
+        // writeControl         timeStep;    
+        // writeInterval        1;
+    }
+    yPlus
+    {
+        type            yPlus;
+        libs            (fieldFunctionObjects);
+        patches         (lowerWall);
+        writeFields     true;
+        log             true;
+        executeControl  writeTime;
+        writeControl    writeTime;
+    }
+
+   vorticity
+   {
+        type            vorticity;
+        libs            ("libfieldFunctionObjects.so");
+        executeControl  writeTime;
+        writeControl    writeTime;
+   }
+
+   
+   wallShearStress
+   {
+    // Mandatory entries
+        type            wallShearStress;
+        libs            ("libfieldFunctionObjects.so");
+
+    // Optional entries
+        patches         
+        (
+            lowerWall
+            upperWall
+        );
+        writeFields     true;
+        log             true;
+        executeControl       timeStep;    
+        executeInterval      1;
+
+        writeControl   writeTime;
+
+    // Optional (inherited) entries
+        writePrecision  10;
+        writeToFile     true;
+        useUserTime     true;
+
+        //region          lowerWall;
+        //enabled         true;
+        //log             true;
+        //timeStart       0;
+        //timeEnd         1000;
+        //executeControl  timeStep;
+        //executeInterval 1;
+        //writeControl    writeTime;
+        //writeInterval   -1;
+    }
+
+    delta_p
+    {
+        type        multiFieldValue;
+        libs        (fieldFunctionObjects);
+        operation   subtract;
+        functions
+        {
+            pInlet
+            {
+                type            surfaceFieldValue;
+                libs            (fieldFunctionObjects);
+                fields          (p);
+                operation       areaAverage;
+                regionType      patch;
+                name            inlet;
+                writeFields     false;
+            }
+        }
+        writeToFile     true;
+        log             true;
+        //executeControl       timeStep;    
+        //executeInterval      1;
+        executeControl       writeTime;   
+
+        writeControl         writeTime;
+    }
+
+    fieldAverage
+    {
+        type            fieldAverage;
+        functionObjectLibs (libfieldFunctionObjects);
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        timeStart        5e-4;
+        
+        
+        fields
+        (
+            U
+            {
+                mean        yes;
+                prime2Mean yes;
+                base        time;
+            }
+            p
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+            wallShearStress
+            {
+                mean        yes;
+                prime2Mean no;
+                base        time;
+            }
+        );
+    }
+
+    samplesLower
+    {
+        type            surfaces;
+        libs            (sampling);
+        log             true;
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        surfaceFormat   raw;
+        
+        formatOptions
+        {
+            raw 
+            {
+                normal true;
+            }
+        }
+        fields          
+        (
+            wallShearStress
+            wallShearStressMean
+            p
+            U            
+        );
+        surfaces
+        {
+            lowerWall
+            {
+                type patch;
+                patches (lowerWall);
+                interpolate false;
+                invariant true;
+            }
+        }
+    }   
+
+    samplesUpper
+    {
+        type            surfaces;
+        libs            (sampling);
+        log             true;
+        executeControl   writeTime;
+        executeInterval  1;
+        writeControl     writeTime;
+        writeInterval    1;
+        surfaceFormat   raw;
+        
+        formatOptions
+        {
+            raw 
+            {
+                normal true;
+            }
+        }
+        fields          
+        (
+            wallShearStress
+            //wallShearStressMean
+            p
+            //U            
+        );
+        surfaces
+        {
+            upperWall
+            {
+                type patch;
+                patches (upperWall);
+                interpolate false;
+                invariant true;
+            }
+        }
+    }   
+}
 
 // ************************************************************************* //

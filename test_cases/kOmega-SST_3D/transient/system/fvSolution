@@ -1,10 +1,3 @@
-/*--------------------------------*- C++ -*----------------------------------*\
-| =========                 |                                                 |
-| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
-|  \\    /   O peration     | Version:  v2406                                 |
-|   \\  /    A nd           | Website:  www.openfoam.com                      |
-|    \\/     M anipulation  |                                                 |
-\*---------------------------------------------------------------------------*/
 FoamFile
 {
     version     2.0;
@@ -19,8 +12,8 @@ solvers
     p
     {
         solver           GAMG;
-        tolerance        1e-7;
-        relTol           0.01;
+        tolerance        1e-8;
+        relTol           0.001;
         smoother         DICGaussSeidel;
     }
 
@@ -34,8 +27,9 @@ solvers
     {
         solver          smoothSolver;
         smoother        symGaussSeidel;
-        tolerance       1e-05;
-        relTol          0.1;
+        tolerance       1e-08;
+        relTol          0.001;
+        minIter         1;
     }
 
     "(U|k|omega)Final"
@@ -47,8 +41,37 @@ solvers
 
 PIMPLE
 {
-    nNonOrthogonalCorrectors 0;
-    nCorrectors         2;
+    nCorrectors     2; //2
+    nNonOrthogonalCorrectors 2;  // from elbowUnsteady case // 1
+    nOuterCorrectors 50;         // converges after approximatly 5, but for the first loops
+
+     residualControl
+    {
+        "(U|omega|k)"
+        {
+            relTol          0;
+            tolerance       1e-07;
+        }
+
+        p
+        {
+            relTol          0;
+            tolerance       1e-06;
+        }
+    }
+}
+
+relaxationFactors // should be testet further 
+{
+    equations
+    {
+        U             0.95; // 0.9 is more stable but 0.95 more convergent
+        "(k|omega)"   0.95; // 0.9 is more stable but 0.95 more convergent
+    }
+    fields
+    {
+	p		0.9;  
+    }
 }
 
 

@@ -176,8 +176,8 @@ edges
 (
     arc 56 12 ($xCent $yCent $front)
     arc 57 13 ($xCent $yCent $back)
-    arc 58 14 ($xCent #eval{$heigthMidPlane+$yCent} $front)
-    arc 59 15 ($xCent #eval{$heigthMidPlane+$yCent} $back)
+    arc 58 14 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xCent} #eval{$heigthMidPlane+$yCent} $front)
+    arc 59 15 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xCent} #eval{$heigthMidPlane+$yCent} $back)
 
     arc 64 30 (#eval{cos($angle)*($lengthRamp)+$x2Cent} #eval{ (-1)*(sin($angle))*($lengthRamp)+$y2Cent} $front)
     arc 65 31 (#eval{cos($angle)*($lengthRamp)+$x2Cent} #eval{ (-1)*(sin($angle))*($lengthRamp)+$y2Cent} $back)

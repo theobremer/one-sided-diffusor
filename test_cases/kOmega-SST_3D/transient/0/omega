@@ -13,10 +13,9 @@ FoamFile
     object      omega;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
-
 dimensions      [0 0 -1 0 0 0 0];
 
-internalField   uniform 440.15;   
+internalField   uniform 6.71;   // 6,71 = k^0.5/(Cmu^0.25*L) // L=height/6 // Cmu = 0.09
 
 boundaryField
 {
@@ -28,7 +27,9 @@ boundaryField
 
     outlet
     {
-        type            zeroGradient;
+        type            inletOutlet;
+        inletValue      $internalField;
+        value           $internalField;
     }
 
     Jet 
@@ -39,8 +40,7 @@ boundaryField
 
     wallPreInlet
     {
-        type           omegaWallFunction;
-        value          $internalField;
+        type           zeroGradient;
     }
 
     upperWall
