@@ -13,6 +13,8 @@ FoamFile
     object      blockMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//#include <cmath>
+
 
 scale   0.001;                                        // all following lengths are in mm
 
@@ -32,6 +34,9 @@ width2D 2;
 heigthMidPlane 5; //125                                   // heigth of the plane in the middle of the mesh to help refining the lower part
 heigthUpperPlane 395; //350
 
+radius1 300;
+radius2 300;
+
 angleRedSkewness0 #eval{$angleDeg/2};                  // angle of the plain above the edge. Different angle for the rounded to reduce the cell gradient // may lead to higher non-orthogonality
 angleRedSkew0 #eval{$angleRedSkewness0/180*$pi}; 
 angleRedSkewness1 #eval{$angleDeg/2};                  // angle of the left side of main block to reduce the skewness of the cells above the ramp
@@ -45,11 +50,11 @@ angleRedSkew3 #eval{$angleRedSkewness2/180*$pi};
 // number of cells for each block  
 nCellXPreInlet 46; 
 nCellXInlet 100;
-nCellXTrans 3;
+nCellXTrans 15;
 nCellXMainLeft 30;
 nCellXJet 1;
 nCellXMainRight 130;
-nCellXCorner2 3;
+nCellXCorner2 15;
 nCellXPreOutlet 200;
 nCellXOutlet 600;
 
@@ -77,56 +82,69 @@ GradYMiddle ((0.4 0.56 4.5)(0.6 0.44 1));      // 74 + 58 = 132 cells
 GradYHigh 0.5;
 
 
-// ----- calculation of the rounded corners -----
+// ----- calculation of the arches -----
+// upper arch 
+xr1 #eval{-sin($angle)*$radius1+cos($angle)*$radius1*((1-cos($angle))/sin($angle))};
+yr1 0;
 
-// 1 rounded corners 
-x1 -3;
-x2 3;
-y2rad #eval{-$x2*tan($angle)};
-xCent 0;
-yCent #eval{-0.016*$angleDeg};
+xr2 #eval{cos($angle)*$radius1*((1-cos($angle))/sin($angle))};
+yr2 #eval{-$radius1*(1-cos($angle))};
 
-// 2 rounded corners 
-x3 -3;
-x4 3;
-x2Cent 0;
-y2Cent #eval{0.0125*$angleDeg};
-x3Cent 0;
-y3Cent #eval{0.0125*$angleDeg};
+xr3 #eval{$xr1+sin($angle/2)*$radius1};
+yr3 #eval{-$radius1*(1-cos($angle/2))};
+
+
+// lower arch
+x4 #eval{$radius2*(((cos($angle)-1))/sin($angle))};
+
+xr5 #eval{cos($angle)*($lengthRamp-$radius2*((cos($angle)-1)/sin($angle)))+sin($angle*$radius2)};
+yr5 #eval{-$lengthRamp*sin($angle)};
+
+xr6 #eval{$xr5-sin($angle/2)*$radius2};
+yr6 #eval{-$lengthRamp*sin($angle)+$radius2*(1-cos($angle/2))};
 
 
 // ----- caclulation of coordinates -----
 // x-coordinates
 x11 #eval{-$PreInletX-$inletX};
+
 x21 -$inletX;
-x31 $x1;
-x32 #eval{tan($angleRedSkew0)*$heigthMidPlane+$x1};
-x33 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$x1};
-x34 #eval{tan($angleRedSkew0)*$heigth+$x1};
-x41 $x2;
-x42 #eval{tan($angleRedSkew0)*$heigthMidPlane+$x2};
-x43 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$x2};
-x44 #eval{tan($angleRedSkew0)*$heigth+$x2};
+
+x31 $xr1;
+x32 #eval{tan($angleRedSkew0)*$heigthMidPlane+$xr1};
+x33 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$xr1};
+x34 #eval{tan($angleRedSkew0)*$heigth+$xr1};
+
+x41 $xr2;
+x42 #eval{tan($angleRedSkew0)*$heigthMidPlane+$xr2};
+x43 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$xr2};
+x44 #eval{tan($angleRedSkew0)*$heigth+$xr2};
+
 x51 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
 x52 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)};
 x53 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))};
 x54 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))};
+
 x61 #eval{cos($angle)*($lengthRamp-$jetLowEdge)};
 x62 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)};
 x63 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))};
 x64 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))};
-x71 #eval{cos($angle)*($lengthRamp+$x3)};
-x72 #eval{(cos($angle)*($lengthRamp+$x3))+(tan($angleRedSkew2)*$heigthMidPlane)};
-x73 #eval{(cos($angle)*($lengthRamp+$x3))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp+$x3)))};
-x74 #eval{cos($angle)*($lengthRamp+$x3)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp+$x3)))};
-x81 #eval{cos($angle)*($lengthRamp+$x4)};
-x82 #eval{(cos($angle)*($lengthRamp+$x4))+(tan($angleRedSkew2)*$heigthMidPlane)};
-x83 #eval{(cos($angle)*($lengthRamp+$x4))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))};
-x84 #eval{cos($angle)*($lengthRamp+$x4)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))};
+
+x71 #eval{cos($angle)*($lengthRamp+$x4)};
+x72 #eval{(cos($angle)*($lengthRamp+$x4))+(tan($angleRedSkew2)*$heigthMidPlane)};
+x73 #eval{(cos($angle)*($lengthRamp+$x4))+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp+$x4)))};
+x74 #eval{cos($angle)*($lengthRamp+$x4)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp+$x4)))};
+
+x81 $xr5;
+x82 #eval{$xr5+(tan($angleRedSkew2)*$heigthMidPlane)};
+x83 #eval{$xr5+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp)))};
+x84 #eval{$xr5+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp)))};
+
 x91 $HigherRefOut;
 x92 #eval{$HigherRefOut+(tan($angleRedSkew3)*$heigthMidPlane)};
 x93 #eval{$HigherRefOut+(tan($angleRedSkew3)*$heigthUpperPlane)};
 x94 #eval{$HigherRefOut+(tan($angleRedSkew3)*$heigth)};
+
 x10 $outletX;
 
 // y-coordinates
@@ -135,16 +153,21 @@ y2 $heigthMidPlane;
 y3 $heigthUpperPlane;
 y4 $heigth;
 
-y41 $y2rad;
-y42 #eval{$heigthMidPlane+$y2rad};
+y41 $yr2;
+y42 #eval{$heigthMidPlane+$yr2};
+
 y51 #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
 y52 #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
+
 y61 #eval{-sin($angle)*($lengthRamp-$jetLowEdge)};
 y62 #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)};
-y71 #eval{(-1)*(sin($angle))*($lengthRamp+$x3)};
-y72 #eval{$heigthMidPlane-sin($angle)*($lengthRamp+$x3)};
+
+y71 #eval{(-1)*(sin($angle))*($lengthRamp+$x4)};
+y72 #eval{$heigthMidPlane-sin($angle)*($lengthRamp+$x4)};
+
 y81 #eval{(-1)*(sin($angle))*($lengthRamp)};
 y82 #eval{$heigthMidPlane-sin($angle)*($lengthRamp)};
+
 y101 #eval{(-1)*sin($angle)*$lengthRamp};
 y102 #eval{$heigthMidPlane-sin($angle)*($lengthRamp)};
 
@@ -160,49 +183,42 @@ vertices
     ($x11 $y2 $z1) // 3    
     ($x11 $y4 $z2) // 4
     ($x11 $y4 $z1) // 5
-
     ($x21 $y1 $z2)  // 6
     ($x21 $y1 $z1)  // 7
     ($x21 $y2 $z2)  // 8
     ($x21 $y2 $z1)  // 9
     ($x21 $y4 $z2)  // 10
-    ($x21 $y4 $z1)  // 11
-    
+    ($x21 $y4 $z1)  // 11    
     ($x41 $y41 $z2)  // 12
     ($x41 $y41 $z1)  // 13
     ($x42 $y42 $z2)  // 14
     ($x42 $y42 $z1)  // 15
     ($x44 $y4 $z2)  // 16
     ($x44 $y4 $z1)  // 17
-
     ($x51 $y51 $z2) // 18
     ($x51 $y51 $z1) // 19
     ($x52 $y52 $z2) // 20
     ($x52 $y52 $z1) // 21
     ($x54 $y4 $z2) // 22
     ($x54 $y4 $z1) // 23
-
     ($x61 $y61 $z2) // 24
     ($x61 $y61 $z1) // 25
     ($x62 $y62 $z2) // 26
     ($x62 $y62 $z1) // 27
     ($x64 $y4 $z2) // 28
     ($x64 $y4 $z1) // 29
-
     ($x81 $y81 $z2)  // 30
     ($x81 $y81 $z1)  // 31
     ($x82 $y82 $z2)  // 32
     ($x82 $y82 $z1)  // 33
     ($x84 $y4 $z2)  // 34
-    ($x84 $y4 $z1)  // 35
-    
+    ($x84 $y4 $z1)  // 35    
     ($x10 $y101 $z2) // 36
     ($x10 $y101 $z1) // 37
     ($x10 $y102 $z2) // 38
     ($x10 $y102 $z1) // 39
     ($x10 $y4 $z2) // 40
-    ($x10 $y4 $z1) // 41    
-    
+    ($x10 $y4 $z1) // 41      
     ($x11 $y3 $z2) // 42
     ($x11 $y3 $z1) // 43
     ($x21 $y3 $z2)  // 44
@@ -217,7 +233,6 @@ vertices
     ($x83 $y3 $z1)  // 53
     ($x10 $y3 $z2) // 54
     ($x10 $y3 $z1) // 55
-
     ($x31 $y1 $z2) // 56
     ($x31 $y1 $z1) // 57
     ($x32 $y2 $z2) // 58
@@ -226,7 +241,6 @@ vertices
     ($x33 $y3 $z1) // 61
     ($x34 $y4 $z2) // 62
     ($x34 $y4 $z1) //63
-
     ($x71 $y71 $z2)  // 64
     ($x71 $y71 $z1)  // 65
     ($x72 $y72 $z2)  // 66
@@ -235,29 +249,30 @@ vertices
     ($x73 $y3 $z1)  // 69
     ($x74 $y4 $z2)  // 70
     ($x74 $y4 $z1)  // 71
-
     ($x91 $y101 $z2) // 72
-    ($x91 $y101 $z1) // 72
-    ($x92 $y102 $z2) // 72
-    ($x92 $y102 $z1) // 72
-    ($x93 $y3 $z2) // 72
-    ($x93 $y3 $z1) // 72
-    ($x94 $y4 $z2) // 72
-    ($x94 $y4 $z1) // 72
+    ($x91 $y101 $z1) // 73
+    ($x92 $y102 $z2) // 74
+    ($x92 $y102 $z1) // 75
+    ($x93 $y3 $z2) // 76
+    ($x93 $y3 $z1) // 77
+    ($x94 $y4 $z2) // 78
+    ($x94 $y4 $z1) // 79
 
 );
 
 edges
 (
-    arc 56 12 ($xCent $yCent $width2D)
-    arc 57 13 ($xCent $yCent -$width2D)
-    arc 58 14 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xCent} #eval{$heigthMidPlane+$yCent} $width2D)
-    arc 59 15 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xCent} #eval{$heigthMidPlane+$yCent} -$width2D)
+    // upper arch
+    arc 56 12 ($xr3 $yr3 $z2)
+    arc 57 13 ($xr3 $yr3 $z1)
+    arc 58 14 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xr3} #eval{$heigthMidPlane+$yr3} $z2)
+    arc 59 15 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xr3} #eval{$heigthMidPlane+$yr3} $z1)
 
-    arc 64 30 (#eval{cos($angle)*($lengthRamp)+$x2Cent} #eval{ (-1)*(sin($angle))*($lengthRamp)+$y2Cent} $width2D)
-    arc 65 31 (#eval{cos($angle)*($lengthRamp)+$x2Cent} #eval{ (-1)*(sin($angle))*($lengthRamp)+$y2Cent} -$width2D)
-    arc 66 32 (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)+$x3Cent} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)+$y3Cent} $width2D)
-    arc 67 33 (#eval{(cos($angle)*($lengthRamp))+(tan($angleRedSkew2)*$heigthMidPlane)+$x3Cent} #eval{$heigthMidPlane-sin($angle)*($lengthRamp)+$y3Cent} -$width2D)
+    // lower arch
+    arc 64 30 ($xr6 $yr6 $z2)
+    arc 65 31 ($xr6 $yr6 $z1)
+    arc 66 32 (#eval{(tan($angleRedSkew2)*$heigthMidPlane)+$xr6} #eval{$heigthMidPlane+$yr6} $z2)
+    arc 67 33 (#eval{(tan($angleRedSkew2)*$heigthMidPlane)+$xr6} #eval{$heigthMidPlane+$yr6} $z1)
 );
 
 
@@ -352,7 +367,7 @@ blocks
     ($nCellZ $nCellXCorner2 $nCellYhigh)                 
     simpleGrading (1 $GradXCorner2 $GradYHigh)
 
-    // Outlet Block 
+    // Pre Outlet Block 
     hex (72 73 31 30 74 75 33 32)  // bottom 
     ($nCellZ $nCellXPreOutlet $nCellYlow)                 
     simpleGrading (1 $GradXPreOutlet $GradYLow)
@@ -365,6 +380,7 @@ blocks
     ($nCellZ $nCellXPreOutlet $nCellYhigh)                 
     simpleGrading (1 $GradXPreOutlet $GradYHigh)
 
+    // Outlet Block
     hex (36 37 73 72 38 39 75 74)  // bottom 
     ($nCellZ $nCellXOutlet $nCellYlow)                 
     simpleGrading (1 $GradXOutlet $GradYLow)
