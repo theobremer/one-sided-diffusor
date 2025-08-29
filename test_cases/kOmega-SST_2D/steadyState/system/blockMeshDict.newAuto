@@ -1,0 +1,641 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2406                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+//#include <cmath>
+
+
+scale   0.001;                                               // all following lengths are in mm
+
+// ----- general geometry variables -----
+pi 3.1415926535;
+angleDeg 20;                                                // angle of the ramp
+angle #eval{$angleDeg/180*$pi}; 
+lengthRamp 337;                                             // length of the ramp
+heigth 400;                                                 // heigth to the upper wall
+inletX 200;                                                 // length of the inlet with noSlip BC
+PreInletX 100;                                              // length of the inlet with slip BC // later refered to as PreInlet
+outletX #eval{cos($angle)*$lengthRamp+5*$lengthRamp};       // length of outlet behind the ramp. 5x is a approximation which has to be tested
+preOutletX #eval{cos($angle)*$lengthRamp+1*$lengthRamp};  // block to better manage refinement
+jetLowEdge 270;                                             // distance between the low edge of the jet and the end of the ramp
+jetheigth 1.95;                                             // heigth of the Jet opening in experiment 0.5, changed for simpler mesh
+width2D 2;
+heigthMidPlane 5;                                           // heigth of the plane in the middle of the mesh to help refining the lower part
+heigthUpperPlane 395; 
+
+radius1 300;
+radius2 300;
+
+angleRedSkewness0 #eval{$angleDeg/2};                       // angle of the plain above the edge. Different angle for the rounded to reduce the cell gradient // may lead to higher non-orthogonality
+angleRedSkew0 #eval{$angleRedSkewness0/180*$pi}; 
+angleRedSkewness1 #eval{$angleDeg/2};                       // angle of the left side of main block to reduce the skewness of the cells above the ramp
+angleRedSkew1 #eval{$angleRedSkewness1/180*$pi};  
+angleRedSkewness2  #eval{$angleDeg/2};;                     // angle of the right side of the main block to reduce the skewness of the cells above the ramp
+angleRedSkew2 #eval{$angleRedSkewness2/180*$pi};    
+angleRedSkewness3  #eval{$angleDeg/3};;                     // angle of the right side of pre-outlet block to reduce the skewness of the cells right after the ramp
+angleRedSkew3 #eval{$angleRedSkewness3/180*$pi};  
+
+// ----- mesh refinement ----- 
+// length of one cell in x-direction for each block
+cellPreInlet 1;
+cellInlet 1;
+cellTrans1 1;
+cellMainLeft 1;
+celljet 0.5;
+cellMainRight 1;
+cellTrans2 1;
+cellPreOutlet 1;
+cellOutlet 1;
+
+
+nCellYhigh 2;
+GradYHigh 0.5;
+
+nCellZ 1;
+
+// mesh grading 
+GradXPreInlet 1;                                          // >1 to refine downstream                                    
+GradXTrans 1;
+GradXMainLeft 1;      
+GradXJet 1;           
+GradXMainRight 1; 
+GradXCorner2 1;
+GradXPreOutlet 1;     
+
+
+
+
+// ----- calculation of the arches -----
+// upper arch 
+xr1 #eval{-sin($angle)*$radius1+cos($angle)*$radius1*((1-cos($angle))/sin($angle))};
+yr1 0;
+
+xr2 #eval{cos($angle)*$radius1*((1-cos($angle))/sin($angle))};
+yr2 #eval{-$radius1*(1-cos($angle))};
+
+xr3 #eval{$xr1+sin($angle/2)*$radius1};
+yr3 #eval{-$radius1*(1-cos($angle/2))};
+
+
+// lower arch
+x4 #eval{$radius2*(((cos($angle)-1))/sin($angle))};
+
+xr5 #eval{cos($angle)*($lengthRamp-$radius2*((cos($angle)-1)/sin($angle)))+sin($angle*$radius2)};
+yr5 #eval{-$lengthRamp*sin($angle)};
+
+xr6 #eval{$xr5-sin($angle/2)*$radius2};
+yr6 #eval{-$lengthRamp*sin($angle)+$radius2*(1-cos($angle/2))};
+
+
+
+// ----- caclulation of coordinates -----
+// x-coordinates
+x11 #eval{-$PreInletX-$inletX};
+
+x21 -$inletX;
+
+x31 $xr1;
+x32 #eval{tan($angleRedSkew0)*$heigthMidPlane+$xr1};
+x33 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$xr1};
+x34 #eval{tan($angleRedSkew0)*$heigth+$xr1};
+
+x41 $xr2;
+x42 #eval{tan($angleRedSkew0)*$heigthMidPlane+$xr2};
+x43 #eval{tan($angleRedSkew0)*$heigthUpperPlane+$xr2};
+x44 #eval{tan($angleRedSkew0)*$heigth+$xr2};
+
+x51 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
+x52 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthMidPlane)};
+x53 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth))};
+x54 #eval{cos($angle)*($lengthRamp-$jetLowEdge-$jetheigth)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)))};
+
+x61 #eval{cos($angle)*($lengthRamp-$jetLowEdge)};
+x62 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthMidPlane)};
+x63 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigthUpperPlane+sin($angle)*($lengthRamp-$jetLowEdge))};
+x64 #eval{cos($angle)*($lengthRamp-$jetLowEdge)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp-$jetLowEdge)))};
+
+x71 #eval{cos($angle)*($lengthRamp+$x4)};
+x72 #eval{cos($angle)*($lengthRamp+$x4)+(tan($angleRedSkew2)*$heigthMidPlane)};
+x73 #eval{cos($angle)*($lengthRamp+$x4)+(tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp+$x4)))};
+x74 #eval{cos($angle)*($lengthRamp+$x4)+tan($angleRedSkew1)*($heigth+(sin($angle)*($lengthRamp+$x4)))};
+
+x81 $xr5;
+x82 #eval{$xr5+tan($angleRedSkew2)*$heigthMidPlane};
+x83 #eval{$xr5+tan($angleRedSkew2)*($heigthUpperPlane+sin($angle)*($lengthRamp))};
+x84 #eval{$xr5+tan($angleRedSkew2)*($heigth+(sin($angle)*($lengthRamp)))};
+
+x91 $preOutletX;
+x92 #eval{$preOutletX+tan($angleRedSkew3)*$heigthMidPlane};
+x93 #eval{$preOutletX+tan($angleRedSkew3)*($heigthUpperPlane+sin($angle)*($lengthRamp))};
+x94 #eval{$preOutletX+tan($angleRedSkew3)*($heigth+(sin($angle)*($lengthRamp)))};
+
+x10 $outletX;
+
+// y-coordinates
+y1 0;
+y2 $heigthMidPlane;
+y3 $heigthUpperPlane;
+y4 $heigth;
+
+y41 $yr2;
+y42 #eval{$heigthMidPlane+$yr2};
+
+y51 #eval{-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
+y52 #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge-$jetheigth)};
+
+y61 #eval{-sin($angle)*($lengthRamp-$jetLowEdge)};
+y62 #eval{$heigthMidPlane-sin($angle)*($lengthRamp-$jetLowEdge)};
+
+y71 #eval{(-1)*(sin($angle))*($lengthRamp+$x4)};
+y72 #eval{$heigthMidPlane-sin($angle)*($lengthRamp+$x4)};
+
+y81 #eval{(-1)*(sin($angle))*($lengthRamp)};
+y82 #eval{$heigthMidPlane-sin($angle)*($lengthRamp)};
+
+y101 #eval{(-1)*sin($angle)*$lengthRamp};
+y102 #eval{$heigthMidPlane-sin($angle)*($lengthRamp)};
+
+// z-coordinate
+z1 -$width2D;
+z2 $width2D;
+
+
+
+// ----- calculation of the number of cells for each block -----
+nCellXTrans #calc "floor(($radius1*$angle)/$cellTrans1)";
+
+nCellXMainLeft #calc "floor(($lengthRamp-$jetLowEdge-$jetheigth-$xr2/cos($angle))/$cellMainLeft)";
+
+nCellXJet #calc "floor(($jetheigth)/$celljet)";
+
+nCellXMainRight #calc "floor(($jetLowEdge+($x4/cos($angle)))/$cellMainRight)";
+
+nCellXCorner2 #calc "floor($radius2*$angle/$cellTrans2)";
+
+nCellXPreOutlet #calc "floor(($preOutletX-$xr5)/$cellPreOutlet)";
+
+
+// ----- calculation of a outlet block with grading ----- 
+t4    $cellOutlet;     // erste Schichtdicke
+r4    1.05;      // Wachstumsfaktor
+T4    #eval{$outletX-$preOutletX};
+
+nCellXOutlet #calc "floor(log(1 + ($T4 * ($r4 - 1) / $t4)) / log($r4))";
+GradXOutlet #calc "1/(pow($r4, $nCellXOutlet - 1))"; 
+
+// GradXOutlet 1; 
+// nCellXOutlet #calc "floor(($outletX-$preOutletX)/$cellOutlet)";
+// GradXOutlet ((0.65 0.25 0.8)(0.05 0.05 0.333)(0.3 0.7 1)); 
+
+// ----- calculation of a inlet block with grading -----
+t5    $cellTrans1;     // thirst layer thickness
+r5    1.05;            // cell-to-cell grow-ratio
+T5    #eval{($inletX+$xr1)};
+
+nCellXInlet #calc "floor(log(1 + ($T5 * ($r5 - 1) / $t5)) / log($r5))";
+GradXInlet #calc "pow($r5, $nCellXInlet - 1)"; 
+
+// GradXInlet 1; 
+// nCellXInlet #calc "floor(($inletX+$xr1)/$cellInlet)";
+
+// calculation of a pre-inlet block without grading, but fitted to the inlet block
+t6 #eval{$t5*$GradXInlet}; 
+nCellXPreInlet #calc "floor($PreInletX/$t6)";
+// nCellXPreInlet #calc "floor($PreInletX/$cellPreInlet)";
+
+
+// ----- lower inflation layers -----
+t1    3e-5;     // thirst layer thickness - 3e-5 for y+ = 1 and 20m/s 
+r1    1.2;      // cell-to-cell grow-ratio
+T1    #eval{$heigthMidPlane*$scale};     // Gesamtdicke
+
+nCellYlow #calc "floor(log(1 + ($T1 * ($r1 - 1) / $t1)) / log($r1))";
+GradYLow #calc "pow($r1, $nCellYlow - 1)"; 
+
+// alternativ manual
+// nCellYlow 19;  // first cell thickness of 3e-5, last cell thickness of 0.0008
+
+
+// ----- middle block separated in a lower and a upper part -----
+// lower part
+r2    1.01;      // cell-to-cell grow-ratio
+t2    #eval{$t1*$GradYLow*$r2};     // erste Schichtdicke
+percLowMiddle 0.4;
+
+T2    #eval{($heigthUpperPlane-$heigthMidPlane)*$scale*$percLowMiddle};     // Gesamtdicke
+nCellYmiddleLow #calc "floor(log(1 + ($T2 * ($r2 - 1) / $t2)) / log($r2))";
+GradYMiddleLow #calc "pow($r2, $nCellYmiddleLow - 1)"; 
+
+// upper part
+r3    1;
+t3    #eval{$t2*$GradYMiddleLow};
+percUpperMiddle 0.6;
+T3    #eval{($heigthUpperPlane-$heigthMidPlane)*$scale*$percUpperMiddle}; 
+// nCellYmiddleHigh #calc "floor(log(1 + ($T3 * ($r3 - 1) / $t3)) / log($r3))";    // in case r3 isnt 1
+nCellYmiddleHigh #calc "floor($T3/$t3)";
+GradYMiddleHigh #calc "pow($r3, $nCellYmiddleHigh - 1)"; 
+
+
+// calculation of the total number of cells and the grading for the middle block
+nCellYmiddle #eval{$nCellYmiddleLow+$nCellYmiddleHigh};
+
+percCellsLow #eval{$nCellYmiddleLow/$nCellYmiddle};
+percCellsHigh #eval{$nCellYmiddleHigh/$nCellYmiddle};
+
+GradYMiddle (($percLowMiddle $percCellsLow $GradYMiddleLow)($percUpperMiddle $percCellsHigh $GradYMiddleHigh));
+
+// alternativ calculated with external tools 
+// nCellYmiddle 132;
+// GradYMiddle ((0.4 0.56 4.5)(0.6 0.44 1));  // 74 + 58 = 132 cells
+
+
+
+//------------------------------------------------------------------------------------------------------------------------------------------//
+
+vertices
+(
+    ($x11 $y1 $z2)    // 0
+    ($x11 $y1 $z1)    // 1    
+    ($x11 $y2 $z2)    // 2
+    ($x11 $y2 $z1)    // 3    
+    ($x11 $y4 $z2)    // 4
+    ($x11 $y4 $z1)    // 5
+    ($x21 $y1 $z2)    // 6
+    ($x21 $y1 $z1)    // 7
+    ($x21 $y2 $z2)    // 8
+    ($x21 $y2 $z1)    // 9
+    ($x21 $y4 $z2)    // 10
+    ($x21 $y4 $z1)    // 11    
+    ($x41 $y41 $z2)   // 12
+    ($x41 $y41 $z1)   // 13
+    ($x42 $y42 $z2)   // 14
+    ($x42 $y42 $z1)   // 15
+    ($x44 $y4 $z2)    // 16
+    ($x44 $y4 $z1)    // 17
+    ($x51 $y51 $z2)   // 18
+    ($x51 $y51 $z1)   // 19
+    ($x52 $y52 $z2)   // 20
+    ($x52 $y52 $z1)   // 21
+    ($x54 $y4 $z2)    // 22
+    ($x54 $y4 $z1)    // 23
+    ($x61 $y61 $z2)   // 24
+    ($x61 $y61 $z1)   // 25
+    ($x62 $y62 $z2)   // 26
+    ($x62 $y62 $z1)   // 27
+    ($x64 $y4 $z2)    // 28
+    ($x64 $y4 $z1)    // 29
+    ($x81 $y81 $z2)   // 30
+    ($x81 $y81 $z1)   // 31
+    ($x82 $y82 $z2)   // 32
+    ($x82 $y82 $z1)   // 33
+    ($x84 $y4 $z2)    // 34
+    ($x84 $y4 $z1)    // 35    
+    ($x10 $y101 $z2)  // 36
+    ($x10 $y101 $z1)  // 37
+    ($x10 $y102 $z2)  // 38
+    ($x10 $y102 $z1)  // 39
+    ($x10 $y4 $z2)    // 40
+    ($x10 $y4 $z1)    // 41      
+    ($x11 $y3 $z2)    // 42
+    ($x11 $y3 $z1)    // 43
+    ($x21 $y3 $z2)    // 44
+    ($x21 $y3 $z1)    // 45
+    ($x43 $y3 $z2)    // 46
+    ($x43 $y3 $z1)    // 47
+    ($x53 $y3 $z2)    // 48
+    ($x53 $y3 $z1)    // 49
+    ($x63 $y3 $z2)    // 50
+    ($x63 $y3 $z1)    // 51
+    ($x83 $y3 $z2)    // 52
+    ($x83 $y3 $z1)    // 53
+    ($x10 $y3 $z2)    // 54
+    ($x10 $y3 $z1)    // 55
+    ($x31 $y1 $z2)    // 56
+    ($x31 $y1 $z1)    // 57
+    ($x32 $y2 $z2)    // 58
+    ($x32 $y2 $z1)    // 59
+    ($x33 $y3 $z2)    // 60
+    ($x33 $y3 $z1)    // 61
+    ($x34 $y4 $z2)    // 62
+    ($x34 $y4 $z1)    // 63
+    ($x71 $y71 $z2)   // 64
+    ($x71 $y71 $z1)   // 65
+    ($x72 $y72 $z2)   // 66
+    ($x72 $y72 $z1)   // 67  
+    ($x73 $y3 $z2)    // 68
+    ($x73 $y3 $z1)    // 69
+    ($x74 $y4 $z2)    // 70
+    ($x74 $y4 $z1)    // 71
+    ($x91 $y101 $z2)  // 72
+    ($x91 $y101 $z1)  // 73
+    ($x92 $y102 $z2)  // 74
+    ($x92 $y102 $z1)  // 75
+    ($x93 $y3 $z2)    // 76
+    ($x93 $y3 $z1)    // 77
+    ($x94 $y4 $z2)    // 78
+    ($x94 $y4 $z1)    // 79
+
+);
+
+edges
+(
+    // upper arch
+    arc 56 12 ($xr3 $yr3 $z2)
+    arc 57 13 ($xr3 $yr3 $z1)
+    arc 58 14 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xr3} #eval{$heigthMidPlane+$yr3} $z2)
+    arc 59 15 (#eval{tan($angleRedSkew0)*$heigthMidPlane+$xr3} #eval{$heigthMidPlane+$yr3} $z1)
+
+    // lower arch
+    arc 64 30 ($xr6 $yr6 $z2)
+    arc 65 31 ($xr6 $yr6 $z1)
+    arc 66 32 (#eval{(tan($angleRedSkew2)*$heigthMidPlane)+$xr6} #eval{$heigthMidPlane+$yr6} $z2)
+    arc 67 33 (#eval{(tan($angleRedSkew2)*$heigthMidPlane)+$xr6} #eval{$heigthMidPlane+$yr6} $z1)
+);
+
+
+blocks
+(
+    // pre inlet // (z x y)
+    hex (6 7 1 0 8 9 3 2)  // bottom
+    ($nCellZ $nCellXPreInlet $nCellYlow)
+    simpleGrading (1 $GradXPreInlet $GradYLow)
+
+    hex (8 9 3 2 44 45 43 42)  // middle
+    ($nCellZ $nCellXPreInlet $nCellYmiddle)
+    simpleGrading (1 $GradXPreInlet $GradYMiddle)
+
+    hex (44 45 43 42 10 11 5 4)  // top
+    ($nCellZ $nCellXPreInlet $nCellYhigh)
+    simpleGrading (1 $GradXPreInlet $GradYHigh)
+
+    // inlet 
+    hex (56 57 7 6 58 59 9 8) // bottom
+    ($nCellZ $nCellXInlet $nCellYlow)                 
+    simpleGrading (1 $GradXInlet $GradYLow)
+
+    hex (58 59 9 8 60 61 45 44) // middle
+    ($nCellZ $nCellXInlet $nCellYmiddle)                 
+    simpleGrading (1 $GradXInlet $GradYMiddle)
+
+    hex (60 61 45 44 62 63 11 10) // top
+    ($nCellZ $nCellXInlet $nCellYhigh)                 
+    simpleGrading (1 $GradXInlet $GradYHigh)
+
+    // transition
+    hex (12 13 57 56 14 15 59 58) // bottom
+    ($nCellZ $nCellXTrans $nCellYlow)                 
+    simpleGrading (1 $GradXTrans $GradYLow)
+
+    hex (14 15 59 58 46 47 61 60) // bottom
+    ($nCellZ $nCellXTrans $nCellYmiddle)                 
+    simpleGrading (1 $GradXTrans $GradYMiddle)
+
+    hex (46 47 61 60 16 17 63 62) // bottom
+    ($nCellZ $nCellXTrans $nCellYhigh)                 
+    simpleGrading (1 $GradXTrans $GradYHigh)
+
+
+    // ramp 
+    hex (18 19 13 12 20 21 15 14) // left bottom 
+    ($nCellZ $nCellXMainLeft $nCellYlow)                 
+    simpleGrading (1 $GradXMainLeft $GradYLow)
+
+    hex (20 21 15 14 48 49 47 46)  // left middle 
+    ($nCellZ $nCellXMainLeft $nCellYmiddle)                 
+    simpleGrading (1 $GradXMainLeft $GradYMiddle)
+
+    hex (48 49 47 46 22 23 17 16)  // left top 
+    ($nCellZ $nCellXMainLeft $nCellYhigh)                 
+    simpleGrading (1 $GradXMainLeft $GradYHigh)
+
+    hex (24 25 19 18 26 27 21 20) // jet bottom 
+    ($nCellZ $nCellXJet $nCellYlow)                 
+    simpleGrading (1 $GradXJet $GradYLow)
+
+    hex (26 27 21 20 50 51 49 48) // jet middle
+    ($nCellZ $nCellXJet $nCellYmiddle)                 
+    simpleGrading (1 $GradXJet $GradYMiddle)
+
+    hex (50 51 49 48 28 29 23 22) // jet top
+    ($nCellZ $nCellXJet $nCellYhigh)                 
+    simpleGrading (1 $GradXJet $GradYHigh)
+
+    hex (64 65 25 24 66 67 27 26) // right bottom 
+    ($nCellZ $nCellXMainRight $nCellYlow)                 
+    simpleGrading (1 $GradXMainRight $GradYLow)
+
+    hex (66 67 27 26 68 69 51 50)  // right middle 
+    ($nCellZ $nCellXMainRight $nCellYmiddle)                 
+    simpleGrading (1 $GradXMainRight $GradYMiddle)
+
+    hex (68 69 51 50 70 71 29 28)  // right top 
+    ($nCellZ $nCellXMainRight $nCellYhigh)                 
+    simpleGrading (1 $GradXMainRight $GradYHigh)
+
+    hex (30 31 65 64 32 33 67 66) // corner bottom 
+    ($nCellZ $nCellXCorner2 $nCellYlow)                 
+    simpleGrading (1 $GradXCorner2 $GradYLow)
+
+    hex (32 33 67 66 52 53 69 68)  // right middle 
+    ($nCellZ $nCellXCorner2 $nCellYmiddle)                 
+    simpleGrading (1 $GradXCorner2 $GradYMiddle)
+
+    hex (52 53 69 68 34 35 71 70)  // right top 
+    ($nCellZ $nCellXCorner2 $nCellYhigh)                 
+    simpleGrading (1 $GradXCorner2 $GradYHigh)
+
+    // pre outlet  
+    hex (72 73 31 30 74 75 33 32)  // bottom 
+    ($nCellZ $nCellXPreOutlet $nCellYlow)                 
+    simpleGrading (1 $GradXPreOutlet $GradYLow)
+
+    hex (74 75 33 32 76 77 53 52)  // middle
+    ($nCellZ $nCellXPreOutlet $nCellYmiddle)                 
+    simpleGrading (1 $GradXPreOutlet $GradYMiddle)
+
+    hex (76 77 53 52 78 79 35 34)  // top
+    ($nCellZ $nCellXPreOutlet $nCellYhigh)                 
+    simpleGrading (1 $GradXPreOutlet $GradYHigh)
+
+    // outlet 
+    hex (36 37 73 72 38 39 75 74)  // bottom 
+    ($nCellZ $nCellXOutlet $nCellYlow)                 
+    simpleGrading (1 $GradXOutlet $GradYLow)
+
+    hex (38 39 75 74 54 55 77 76)  // middle
+    ($nCellZ $nCellXOutlet $nCellYmiddle)                 
+    simpleGrading (1 $GradXOutlet $GradYMiddle)
+
+    hex (54 55 77 76 40 41 79 78)  // top
+    ($nCellZ $nCellXOutlet $nCellYhigh)                 
+    simpleGrading (1 $GradXOutlet $GradYHigh)
+);
+
+boundary
+(
+    inlet
+    {
+        type patch;
+        faces
+        (
+           (0 1 3 2)
+           (2 3 43 42)
+           (42 43 5 4)
+        );
+    }
+  
+    outlet
+    {
+        type patch;
+        faces
+        (
+            (36 37 39 38)
+            (38 39 55 54)
+            (54 55 41 40)                       
+        );
+    }
+    wallPreInlet
+    {
+        type wall;
+        faces
+        (
+        // upper wall
+        (10 11 5 4)
+        // lower wall
+        (6 7 1 0)
+        );
+
+    }
+    upperWall
+    {
+        type wall;
+        faces
+        (
+            (62 63 11 10)
+            (16 17 63 62)
+            (22 23 17 16)
+            (28 29 23 22)
+            (70 71 29 28)
+            (34 35 71 70)
+            (78 79 35 34)
+            (40 41 79 78)       
+        );
+    }
+    lowerWall  
+    {
+        type wall;
+        faces
+        (
+            (56 57 7 6)
+            (12 13 57 56)
+            (18 19 13 12)
+            
+            (64 65 25 24)
+            (30 31 65 64)
+            (72 73 31 30)
+            (36 37 73 72)                             
+        );
+    }
+    Jet
+    {
+        type wall;   // just to try without the jet active. For active jet: type patch;
+        faces 
+        (
+            (25 19 18 24)
+        );
+    }
+    frontAndBack
+    {
+        type            empty;
+        faces
+        (
+            // front
+            (6 8 2 0)
+            (8 44 42 2)
+            (44 10 4 42)
+
+            (56 58 8 6)
+            (58 60 44 8)
+            (60 62 10 44)
+
+            (12 14 58 56)
+            (14 46 60 58)
+            (46 16 62 60)
+
+            (18 20 14 12)
+            (20 48 46 14)
+            (48 22 16 46)
+
+            (24 26 20 18)
+            (26 50 48 20)
+            (50 28 22 48)
+
+            (64 66 26 24)
+            (66 68 50 26)
+            (68 70 28 50)
+
+            (30 32 66 64)
+            (32 52 68 66)
+            (52 34 70 68)
+
+            (72 74 32 30)
+            (74 76 52 32)
+            (76 78 34 52)
+
+            (36 38 74 72)
+            (38 54 76 74)
+            (54 40 78 76)
+            
+            // back 
+            (7 9 3 1)
+            (9 45 43 3)
+            (45 11 5 43)
+
+            (57 59 9 7) 
+            (59 61 45 9)
+            (61 63 11 45)
+            
+            (13 15 59 57)
+            (15 47 61 59)
+            (47 17 63 61)
+
+            (19 21 15 13)
+            (21 49 47 15)
+            (49 23 17 47)
+
+            (25 27 21 19)
+            (27 51 49 21)
+            (51 29 23 49)
+
+            (65 67 27 25)
+            (67 69 51 27)
+            (69 71 29 51)
+
+            (31 33 67 65)
+            (33 53 69 67)
+            (53 35 71 69)
+
+            (73 75 33 31)
+            (75 77 53 33)
+            (77 79 35 53)
+
+            (37 39 75 73)
+            (39 55 77 75)
+            (55 41 79 77)            
+        );
+    }
+);
+
+
+// ************************************************************************* //
